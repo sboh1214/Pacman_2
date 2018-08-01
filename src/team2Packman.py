@@ -62,6 +62,7 @@ class myAgent(CaptureAgent) :
 
         '''
         Your initialization code goes here, if you need any.
+        '''
 
         self.start = gameState.getAgentPosition(self.index)
         self.isRed = gameState.isOnRedTeam(self.index)
@@ -73,7 +74,7 @@ class myAgent(CaptureAgent) :
         actions = gameState.getLegalActions(self.index)
 
         '''
-       # You should change this in your own agent.
+        You should change this in your own agent.
         '''
 
         move = self.chooseMove(gameState)[1]
@@ -92,27 +93,9 @@ class myAgent(CaptureAgent) :
         else:
             return successor
 
-"""class DistanceCalculate(distanceCalculator):
-    def distance(self,pos1,pos2):
-        distancer = Distancer(gameState.data.layout)
-        DistanceCheck=distancer.getDistance(self,pos1,pos2)
-        print(DistanceCheck)'''
-
 class FirstAgent(myAgent) :
 
     count = 0
-    weight={"EatenPallet":10, \
-    "":-3, \
-    "":1, \
-    "":0, \
-    "":-3, \
-    "":-10, \
-    "":-15, \
-    "":1, \
-    "":20, \
-    "":2, \
-    "":-20, \
-    "":2}
 
     def probability(self, gameState, action) :
         return 1/len(gameState.getLegalActions(self.index))
@@ -120,6 +103,8 @@ class FirstAgent(myAgent) :
     def terminalEvaluation(self, gameState, foodLeft) :
 
         foodLeft1 = self.getFood(gameState).asList()
+
+        weight = [10, -3, 1, 0, -3, -10, -15, 1, 20, 2, -20, 2]
 
         terminal = [foodLeft-len(foodLeft1), 'Stop']
         foodNearest = float("inf")
@@ -132,13 +117,13 @@ class FirstAgent(myAgent) :
             foodNearest = 0
         
         if(GameState.isRed): #점수가 앞설 때 방어지점과의 거리 계산 및 연산 
-            if(CaptureAgent.getScore>0) :
+            if(CaptureAgent.getScore(self,gameState)>0) :
                 distanceFromDefend=((weight[11]*self.getMazeDistance(GameState.getAgentPosition(self.index),(12,10)))**2)*(-1)
         else:
-            if(CaptureAgent.getScore>0) :
+            if(CaptureAgent.getScore(self,gameState)>0) :
                 distanceFromDefend=((weight[11]*self.getMazeDistance(GameState.getAgentPosition(self.index),(19,5)))**2)*(-1)
         
-        terminal[0] = terminal[0]*weight[0] + foodNearest*weight[1] + distanceFromDefend
+        terminal[0] = terminal[0]*weight[0] + foodNearest*weight[1]
         return terminal
 
     def value(self, gameState, depth, foodLeft, alpha, beta) :
@@ -256,12 +241,14 @@ class FirstAgent(myAgent) :
 class SecondAgent(myAgent) :
 
     count = 0
-    weight=[10,-3,1,0,-3,-10,-15,1,20,2,-20,2]
+
 
     def probability(self, gameState, action) :
         return 1/len(gameState.getLegalActions(self.index))
 
     def terminalEvaluation(self, gameState, foodLeft) :
+
+        weight = [10, -3, 1, 0, -3, -10, -15, 1, 20, 2, -20, 2]
 
         foodLeft1 = self.getFood(gameState).asList()
 
@@ -276,13 +263,13 @@ class SecondAgent(myAgent) :
             foodNearest = 0
         
         if(GameState.isRed): #점수가 앞설 때 방어지점과의 거리 계산 및 연산 
-            if(CaptureAgent.getScore>0):
+            if(CaptureAgent.getScore(self,gameState)>0):
                 distanceFromDefend=((weight[11]*self.getMazeDistance(GameState.getAgentPosition(self.index),(12,4)))**2)*(-1)
         else:
-            if(CaptureAgent.getScore>0):
+            if(CaptureAgent.getScore(self,gameState)>0):
                 distanceFromDefend=((weight[11]*self.getMazeDistance(GameState.getAgentPosition(self.index),(19,11)))**2)*(-1)
         
-        terminal[0] = terminal[0]*weight[0] + foodNearest*weight[1] + distanceFromDefend
+        terminal[0] = terminal[0]*weight[0] + foodNearest*weight[1]
         return terminal
 
     def value(self, gameState, depth, foodLeft, alpha, beta) :

@@ -166,7 +166,9 @@ class CaptureAgent(Agent):
     Override this method to make a good agent. It should return a legal action within
     the time limit (otherwise a random legal action will be chosen for you).
     """
-    util.raiseNotDefined()
+    from util import Counter
+
+    Counter(dict).raiseNotDefined()
 
   #######################
   # Convenience Methods #
