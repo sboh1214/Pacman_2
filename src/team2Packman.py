@@ -79,6 +79,20 @@ class myAgent(CaptureAgent) :
         self.start = gameState.getAgentPosition(self.index)
         self.isRed = gameState.isOnRedTeam(self.index)
 
+    def chooseAction(self, gameState):
+        """
+        Picks among actions randomly.
+        """
+        actions = gameState.getLegalActions(self.index)
+
+        '''
+       # You should change this in your own agent.
+        '''
+
+        move = self.chooseMove(gameState)[1]
+
+        return move
+
     def getSuccessor(self, gameState, action):
         """
         Finds the next successor which is a grid position (location tuple).
@@ -118,10 +132,10 @@ class FirstAgent(myAgent) :
             foodNearest = 0
         
         if(GameState.isRed): #점수가 앞설 때 방어지점과의 거리 계산 및 연산 
-            if(GameState.getScore>0) :
+            if(CaptureAgent.getScore.(self,gameState)>0) :
                 distanceFromDefend=((self.weight["DefensePointDist"]*self.getMazeDistance(GameState.getAgentPosition(self.index),(12,10)))**2)*(-1)
         else:
-            if(GameState.getScore>0) :
+            if(CaptureAgent.getScore.(self,gameState)>0) :
                 distanceFromDefend=((self.weight["DefensePointDist"]*self.getMazeDistance(GameState.getAgentPosition(self.index),(19,5)))**2)*(-1)
         
         terminal[0] = terminal[0]*self.weight["PalletNum"] + foodNearest*self.weight["NearestPallet"] + distanceFromDefend
@@ -238,20 +252,6 @@ class FirstAgent(myAgent) :
             FirstAgent.count += 1
 
         return choice
-    
-    def chooseAction(self, gameState):
-        """
-        Picks among actions randomly.
-        """
-        actions = gameState.getLegalActions(self.index)
-
-        '''
-       # You should change this in your own agent.
-        '''
-
-        move = self.chooseMove(gameState)[1]
-
-        return move
 
 class SecondAgent(myAgent) :
 
@@ -275,10 +275,10 @@ class SecondAgent(myAgent) :
             foodNearest = 0
         
         if(GameState.isRed): #점수가 앞설 때 방어지점과의 거리 계산 및 연산 
-            if(GameState.getScore>0):
+            if(CaptureAgent.getScore.(self,gameState)>0):
                 distanceFromDefend=((self.weight["DefensePointDist"]*self.getMazeDistance(GameState.getAgentPosition(self.index),(12,4)))**2)*(-1)
         else:
-            if(GameState.getScore>0):
+            if(CaptureAgent.getScore.(self,gameState)>0):
                 distanceFromDefend=((self.weight["DefensePointDist"]*self.getMazeDistance(GameState.getAgentPosition(self.index),(19,11)))**2)*(-1)
         
         terminal[0] = terminal[0]*self.weight["PalletNum"] + foodNearest*self.weight["NearestPallet"] + distanceFromDefend
@@ -395,16 +395,3 @@ class SecondAgent(myAgent) :
             FirstAgent.count += 1
 
         return choice
-
-        def chooseAction(self, gameState):
-        
-        # Picks among actions randomly.
-            actions = gameState.getLegalActions(self.index)
-
-        '''
-       # You should change this in your own agent.
-        '''
-
-        move = self.chooseMove(gameState)[1]
-
-        return move
