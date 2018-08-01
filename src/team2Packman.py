@@ -110,7 +110,18 @@ class DistanceCalculate(distanceCalculator):
 class FirstAgent(myAgent) :
 
     count = 0
-    weight=[10,-3,1,0,-3,-10,-15,1,20,2,-20,2]
+    weight={"EatenPallet":10, \
+    "":-3, \
+    "":1, \
+    "":0, \
+    "":-3, \
+    "":-10, \
+    "":-15, \
+    "":1, \
+    "":20, \
+    "":2, \
+    "":-20, \
+    "":2}
 
     def probability(self, gameState, action) :
         return 1/len(gameState.getLegalActions(self.index))
