@@ -133,12 +133,12 @@ class FirstAgent(myAgent) :
         
         if(GameState.isRed): #점수가 앞설 때 방어지점과의 거리 계산 및 연산 
             if(CaptureAgent.getScore>0) :
-                distanceFromDefend=((weight[11]*self.getMazeDistance(GameState.getAgentPosition(self.index),(12,10)))**2)*(-1)
+                distanceFromDefend=((self.weight["DefensePointDist"]*self.getMazeDistance(GameState.getAgentPosition(self.index),(12,10)))**2)*(-1)
         else:
             if(CaptureAgent.getScore>0) :
-                distanceFromDefend=((weight[11]*self.getMazeDistance(GameState.getAgentPosition(self.index),(19,5)))**2)*(-1)
+                distanceFromDefend=((self.weight["DefensePointDist"]*self.getMazeDistance(GameState.getAgentPosition(self.index),(19,5)))**2)*(-1)
         
-        terminal[0] = terminal[0]*weight[0] + foodNearest*weight[1] + distanceFromDefend
+        terminal[0] = terminal[0]*self.weight["PalletNum"] + foodNearest*self.weight["NearestPallet"] + distanceFromDefend
         return terminal
 
     def value(self, gameState, depth, foodLeft, alpha, beta) :
