@@ -33,17 +33,17 @@ def createTeam(firstIndex, secondIndex, isRed,
 
 class myAgent(CaptureAgent) :
 
-    weight={"EatenPallet":10, \
+    weight={"PalletNum":10, \
     "NearestPallet":-3, \
     "OppAgentDist":1, \
     "ScaredOppAgentDist":0, \
     "OurBaseDist":-3, \
     "OurBaseDistInMax5":-10, \
     "OurBaseDistUnder2":-15, \
-    "OppAgentKill":1, \
-    "OppAgentDist":20, \
-    "ScaredAgentDist":2, \
-    "":-20, \
+    "EatenPallet":1, \
+    "OppAgentKill":20, \
+    "OppAgentDist":2, \
+    "ScaredAgentDist":-20, \
     "DefensePointDist":2}
 
     """
