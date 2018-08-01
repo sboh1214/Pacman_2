@@ -397,9 +397,9 @@ class SecondAgent(myAgent) :
         return choice
 
         def chooseAction(self, gameState):
-        """
-        Picks among actions randomly.
-        """
+        
+        # Picks among actions randomly.
+    
         actions = gameState.getLegalActions(self.index)
 
         '''
