@@ -129,7 +129,7 @@ class FirstAgent(myAgent) :
         if(len(foodLeft1) == 0) :
             foodNearest = 0
         
-        if(GameState.isRed): #점수가 앞설 때 방어지점과의 거리 계산 및 연산
+        if(GameState.isRed): #점수가 앞설 때 방어지점과의 거리 계산 및 연산 
             if(CaptureAgent.getScore>0):
 				distanceFromDefend=((weight[11]*DistanceCalculate.distance(GameState.getAgentPosition(self.index),(12,10)))**2)*-1
         else:
@@ -254,6 +254,7 @@ class FirstAgent(myAgent) :
 class SecondAgent(myAgent) :
 
     count = 0
+    weight=[10,-3,1,0,-3,-10,-15,1,20,2,-20,2]
 
     def probability(self, gameState, action) :
         return 1/len(gameState.getLegalActions(self.index))
@@ -265,26 +266,32 @@ class SecondAgent(myAgent) :
         terminal = [foodLeft-len(foodLeft1), 'Stop']
         foodNearest = float("inf")
 
-        for a in foodLeft1 :
+        for a in foodLeft1 : #Pallet 섭취 여부와 가장 가까운 Pallet의 거리 계산
             dist = self.getMazeDistance(a, gameState.getAgentPosition(self.index))
             if(dist<foodNearest):
                 foodNearest = dist
         if(len(foodLeft1) == 0) :
             foodNearest = 0
-
-        terminal[0] = terminal[0]*100 - foodNearest*5
-
+        
+        if(GameState.isRed): #점수가 앞설 때 방어지점과의 거리 계산 및 연산 
+            if(CaptureAgent.getScore>0):
+                distanceFromDefend=((weight[11]*DistanceCalculate.distance(GameState.getAgentPosition(self.index),(12,4)))**2)*-1
+        else:
+            if(CaptureAgent.getScore>0):
+                distanceFromDefend=((weight[11]*DistanceCalculate.distance(GameState.getAgentPosition(self.index),(19,11)))**2)*-1
+        
+        terminal[0] = terminal[0]*weight[0] + foodNearest*weight[1] + distanceFromDefend
         return terminal
 
-    def value(self, gameState, depth, foodLeft) :
-        if depth >= 1 :
+    def value(self, gameState, depth, foodLeft, alpha, beta) :
+        if depth >= 5 :
             return self.terminalEvaluation(gameState, foodLeft)
         elif depth%2 == 0 :
-            return self.maxValue(gameState, depth)
+            return self.maxValue(gameState, depth, alpha, beta)
         else :
-            return self.expValue(gameState, depth)
+            return self.minValue(gameState, depth, alpha, beta)
 
-    def maxValue(self, gameState, depth) :
+    def maxValue(self, gameState, depth, alpha, beta) :
         saves = [float("-inf"), 'Stop']
 
         actions = gameState.getLegalActions(self.index)
@@ -292,13 +299,17 @@ class SecondAgent(myAgent) :
         for action in actions:
             if action is not 'Stop' :
                 successor = self.getSuccessor(gameState, action)
-                compare = self.value(successor, depth+1, len(self.getFood(gameState).asList()))
+                compare = self.value(successor, depth+1, len(self.getFood(gameState).asList()), alpha, beta)
 
                 if type(compare) is list :
                     compare = float(compare[0])
                 if(compare>saves[0]):
                     saves[0] = compare
                     saves[1] = action
+                if (saves[0]>beta):
+                    return saves
+
+                alpha = max(alpha,saves[0])
 
         return saves
 
@@ -311,6 +322,28 @@ class SecondAgent(myAgent) :
             val += p*self.value(self.getSuccessor(gameState, action), depth+1, len(self.getFood(gameState).asList()))[0]
 
         return val
+
+    def minValue(self, gameState, depth, alpha, beta):
+        saves = [float("inf"), 'Stop']
+
+        actions = gameState.getLegalActions(self.index)
+
+        for action in actions:
+            if action is not 'Stop':
+                successor = self.getSuccessor(gameState, action)
+                compare = self.value(successor, depth + 1, len(self.getFood(gameState).asList()), alpha, beta)
+
+                if type(compare) is list:
+                    compare = float(compare[0])
+                if (compare < saves[0]):
+                    saves[0] = compare
+                    saves[1] = action
+                if (saves[0] < alpha ):
+                    return saves
+
+                beta = min(alpha, saves[0])
+
+        return saves
 
     def goHomeEvaluation(self, gameState) :
         position = gameState.getAgentPosition(self.index)
@@ -345,19 +378,19 @@ class SecondAgent(myAgent) :
     def chooseMove(self, gameState):
 
         if(abs(gameState.getAgentPosition(self.index)[0]-self.start[0])<=14) :
-            SecondAgent.count = 0
+            FirstAgent.count=0
 
-        if SecondAgent.count>3 or (SecondAgent.count is not 0 and len(self.getFood(gameState).asList())<=2) :
+        if FirstAgent.count>3 or (FirstAgent.count is not 0 and len(self.getFood(gameState).asList())<=2) :
             return self.goHome(gameState)
 
         foodLeft = len(self.getFood(gameState).asList())
-        choice = self.value(gameState, 0, foodLeft)
+        choice = self.value(gameState, 0, foodLeft,float("-inf"),float("inf"))
 
 
         successor = self.getSuccessor(gameState, choice[1])
 
 
         if (foodLeft - len(self.getFood(successor).asList())) is 1 :
-            SecondAgent.count += 1
+            FirstAgent.count += 1
 
         return choice
