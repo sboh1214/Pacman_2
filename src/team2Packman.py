@@ -177,7 +177,7 @@ class FirstAgent(myAgent) :
 
         for action in actions:
             p = self.probability(gameState, action)
-            val += p*self.value(self.getSuccessor(gameState, action), depth+1, len(self.getFood(gameState).asList()))[0]
+            val += p*self.value(self.getSuccessor(gameState, action), depth+1, len(self.getFood(gameState).asList()),alpha,beta)[0]
 
         return val
 
@@ -320,7 +320,7 @@ class SecondAgent(myAgent) :
 
         for action in actions:
             p = self.probability(gameState, action)
-            val += p*self.value(self.getSuccessor(gameState, action), depth+1, len(self.getFood(gameState).asList()))[0]
+            val += p*self.value(self.getSuccessor(gameState, action), depth+1, len(self.getFood(gameState).asList()),alpha,beta)[0]
 
         return val
 
