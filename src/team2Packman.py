@@ -98,9 +98,15 @@ class myAgent(CaptureAgent) :
         DistanceCheck=distancer.getDistance(self,pos1,pos2)
         print(DistanceCheck)'''
 
+class DistanceCalculate(distanceCalculator):
+    def distance(self,pos1,pos2):
+        distancer = Distancer(gameState.data.layout)
+        return distancer.getDistance(pos1,pos2)
+
 class FirstAgent(myAgent) :
 
     count = 0
+    weight=[10,-3,1,0,-3,-10,-15,1,20,2,-20,2]
 
     def probability(self, gameState, action) :
         return 1/len(gameState.getLegalActions(self.index))
@@ -112,23 +118,21 @@ class FirstAgent(myAgent) :
         terminal = [foodLeft-len(foodLeft1), 'Stop']
         foodNearest = float("inf")
 
-        for a in foodLeft1 :
+        for a in foodLeft1 : #Pallet 섭취 여부와 가장 가까운 Pallet의 거리 계산
             dist = self.getMazeDistance(a, gameState.getAgentPosition(self.index))
             if(dist<foodNearest):
                 foodNearest = dist
         if(len(foodLeft1) == 0) :
             foodNearest = 0
-
-        if(isRed):
-            if(getScore(gameState)>0):
-
-
-
-
-
-
-        terminal[0] = terminal[0]*100 - foodNearest*5
-
+        
+        if(GameState.isRed): #점수가 앞설 때 방어지점과의 거리 계산 및 연산
+            if(CaptureAgent.getScore>0):
+				distanceFromDefend=((weight[11]*DistanceCalculate.distance(GameState.getAgentPosition(self.index),(12,10)))**2)*-1
+        else:
+            if(CaptureAgent.getScore>0):
+                distanceFromDefend=((weight[11]*DistanceCalculate.distance(GameState.getAgentPosition(self.index),(19,5)))**2)*-1
+        
+        terminal[0] = terminal[0]*weight[0] + foodNearest*weight[1] + distanceFromDefend
         return terminal
 
     def value(self, gameState, depth, foodLeft, alpha, beta) :
