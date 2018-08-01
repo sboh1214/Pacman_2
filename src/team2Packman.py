@@ -101,6 +101,10 @@ class myAgent(CaptureAgent) :
 class DistanceCalculate(distanceCalculator):
     def distance(self,pos1,pos2):
         distancer = Distancer(gameState.data.layout)
+        #test code start
+        temp = distancer.getDistance(pos1,pos2)
+        print(temp)
+        #test code end
         return distancer.getDistance(pos1,pos2)
 
 class FirstAgent(myAgent) :
