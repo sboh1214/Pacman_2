@@ -105,7 +105,7 @@ class myAgent(CaptureAgent) :
         else:
             return successor
 
-'''class DistanceCalculate(distanceCalculator):
+'''class DistanceCalculate(DistanceCalculator):
     def distance(self,pos1,pos2):
         distancer = Distancer(gameState.data.layout)
         DistanceCheck=distancer.getDistance(self,pos1,pos2)'''
@@ -132,10 +132,10 @@ class FirstAgent(myAgent) :
             foodNearest = 0
         
         if(GameState.isRed): #점수가 앞설 때 방어지점과의 거리 계산 및 연산 
-            if(CaptureAgent.getScore>0) :
+            if(GameState.getScore>0) :
                 distanceFromDefend=((self.weight["DefensePointDist"]*self.getMazeDistance(GameState.getAgentPosition(self.index),(12,10)))**2)*(-1)
         else:
-            if(CaptureAgent.getScore>0) :
+            if(GameState.getScore>0) :
                 distanceFromDefend=((self.weight["DefensePointDist"]*self.getMazeDistance(GameState.getAgentPosition(self.index),(19,5)))**2)*(-1)
         
         terminal[0] = terminal[0]*self.weight["PalletNum"] + foodNearest*self.weight["NearestPallet"] + distanceFromDefend
@@ -149,7 +149,7 @@ class FirstAgent(myAgent) :
         else :
             return self.minValue(gameState, depth, alpha, beta)
 
-    def maxValdue(self, gameState, depth, alpha, beta) :
+    def maxValue(self, gameState, depth, alpha, beta) :
         saves = [float("-inf"), 'Stop']
 
         actions = gameState.getLegalActions(self.index)
@@ -275,10 +275,10 @@ class SecondAgent(myAgent) :
             foodNearest = 0
         
         if(GameState.isRed): #점수가 앞설 때 방어지점과의 거리 계산 및 연산 
-            if(CaptureAgent.getScore>0):
+            if(GameState.getScore>0):
                 distanceFromDefend=((self.weight["DefensePointDist"]*self.getMazeDistance(GameState.getAgentPosition(self.index),(12,4)))**2)*(-1)
         else:
-            if(CaptureAgent.getScore>0):
+            if(GameState.getScore>0):
                 distanceFromDefend=((self.weight["DefensePointDist"]*self.getMazeDistance(GameState.getAgentPosition(self.index),(19,11)))**2)*(-1)
         
         terminal[0] = terminal[0]*self.weight["PalletNum"] + foodNearest*self.weight["NearestPallet"] + distanceFromDefend
