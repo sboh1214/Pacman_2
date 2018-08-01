@@ -79,20 +79,6 @@ class myAgent(CaptureAgent) :
         self.start = gameState.getAgentPosition(self.index)
         self.isRed = gameState.isOnRedTeam(self.index)
 
-    def chooseAction(self, gameState):
-        """
-        Picks among actions randomly.
-        """
-        actions = gameState.getLegalActions(self.index)
-
-        '''
-       # You should change this in your own agent.
-        '''
-
-        move = self.chooseMove(gameState)[1]
-
-        return move
-
     def getSuccessor(self, gameState, action):
         """
         Finds the next successor which is a grid position (location tuple).
@@ -252,6 +238,20 @@ class FirstAgent(myAgent) :
             FirstAgent.count += 1
 
         return choice
+    
+    def chooseAction(self, gameState):
+        """
+        Picks among actions randomly.
+        """
+        actions = gameState.getLegalActions(self.index)
+
+        '''
+       # You should change this in your own agent.
+        '''
+
+        move = self.chooseMove(gameState)[1]
+
+        return move
 
 class SecondAgent(myAgent) :
 
@@ -395,3 +395,17 @@ class SecondAgent(myAgent) :
             FirstAgent.count += 1
 
         return choice
+
+        def chooseAction(self, gameState):
+        """
+        Picks among actions randomly.
+        """
+        actions = gameState.getLegalActions(self.index)
+
+        '''
+       # You should change this in your own agent.
+        '''
+
+        move = self.chooseMove(gameState)[1]
+
+        return move
