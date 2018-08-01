@@ -105,10 +105,10 @@ class myAgent(CaptureAgent) :
         else:
             return successor
 
-class DistanceCalculate(distanceCalculator):
+'''class DistanceCalculate(distanceCalculator):
     def distance(self,pos1,pos2):
         distancer = Distancer(gameState.data.layout)
-        DistanceCheck=distancer.getDistance(self,pos1,pos2)
+        DistanceCheck=distancer.getDistance(self,pos1,pos2)'''
 
 class FirstAgent(myAgent) :
 
@@ -149,7 +149,7 @@ class FirstAgent(myAgent) :
         else :
             return self.minValue(gameState, depth, alpha, beta)
 
-    def maxValue(self, gameState, depth, alpha, beta) :
+    def maxValdue(self, gameState, depth, alpha, beta) :
         saves = [float("-inf"), 'Stop']
 
         actions = gameState.getLegalActions(self.index)
