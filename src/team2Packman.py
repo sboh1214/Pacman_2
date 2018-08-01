@@ -75,7 +75,7 @@ class myAgent(CaptureAgent) :
 
         '''
         Your initialization code goes here, if you need any.
-
+        '''
         self.start = gameState.getAgentPosition(self.index)
         self.isRed = gameState.isOnRedTeam(self.index)
 
@@ -105,11 +105,10 @@ class myAgent(CaptureAgent) :
         else:
             return successor
 
-"""class DistanceCalculate(distanceCalculator):
+class DistanceCalculate(distanceCalculator):
     def distance(self,pos1,pos2):
         distancer = Distancer(gameState.data.layout)
         DistanceCheck=distancer.getDistance(self,pos1,pos2)
-        print(DistanceCheck)'''
 
 class FirstAgent(myAgent) :
 
