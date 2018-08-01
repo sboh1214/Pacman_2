@@ -400,7 +400,7 @@ class SecondAgent(myAgent) :
         
         # Picks among actions randomly.
     
-        actions = gameState.getLegalActions(self.index)
+            actions = gameState.getLegalActions(self.index)
 
         '''
        # You should change this in your own agent.
