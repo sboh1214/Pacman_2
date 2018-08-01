@@ -234,6 +234,49 @@ class FirstAgent(myAgent) :
 
         return saves
 
+    def HowToAction(self, gameState):
+        LeftTime = gameState.data.TimeLeft
+        Score = gameState.getScore()
+        RB = gameState.isRed()
+        if (Score > 0 and RB == True):
+            IsWin = True
+        else:
+            IsWin = False
+        RedFirst = gameState.getLegalActions(0)
+        RedSecond = gameState.getLegalActions(1)
+        BlueFirst = gameState.getLegalActions(2)
+        BlueSecond = gameState.getLegalActions(3)
+
+        
+
+        if (LeftTime <= 120 and IsWin==False):
+            return "TimeAttack"
+        elif (LeftTime <= 120 and IsWin==True):
+            return "TimeDefense"
+        else:
+            return "AI"        
+
+    def chooseTimeAttack(self,gameState):
+        if (gameState.isRed==True):
+            Team = "Red"
+        else:
+            Team = "Blue"
+        RedFirst = gameState.getLegalActions(0)
+        RedSecond = gameState.getLegalActions(1)
+        BlueFirst = gameState.getLegalActions(2)
+        BlueSecond = gameState.getLegalActions(3)
+
+    def chooseTimeDefense(self, gameState):
+        if (gameState.isRed==True):
+            Team = "Red"
+        else:
+            Team = "Blue"
+        RedFirst = gameState.getLegalActions(0)
+        RedSecond = gameState.getLegalActions(1)
+        BlueFirst = gameState.getLegalActions(2)
+        BlueSecond = gameState.getLegalActions(3)
+
+
     def chooseMove(self, gameState):
 
         if(abs(gameState.getAgentPosition(self.index)[0]-self.start[0])<=14) :
@@ -243,8 +286,16 @@ class FirstAgent(myAgent) :
             return self.goHome(gameState)
 
         foodLeft = len(self.getFood(gameState).asList())
-        choice = self.value(gameState, 0, foodLeft,float("-inf"),float("inf"))
 
+        selection = self.HowToAction(gameState) #AI가 필요한지 노가다가 필요한지 결정
+        if (selection == "AI"):
+            choice = self.value(gameState, 0, foodLeft,float("-inf"),float("inf")) #AI사용
+        elif (selection == "TimeAttack"):
+            choice = self.chooseTimeAttack(gameState) #시간이 얼마 남지 않았는데 지고 있을때
+        elif (selection == "TimeDefense"):
+            choice = self.chooseTimeDefense(gameState) #시간이 얼마 남지 않았는데 이기고 있을때
+        else:
+            choice = self.value(gameState, 0, foodLeft,float("-inf"),float("inf"))
 
         successor = self.getSuccessor(gameState, choice[1])
 
