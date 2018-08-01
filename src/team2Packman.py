@@ -33,6 +33,19 @@ def createTeam(firstIndex, secondIndex, isRed,
 
 class myAgent(CaptureAgent) :
 
+    weight={"EatenPallet":10, \
+    "NearestPallet":-3, \
+    "OppAgentDist":1, \
+    "ScaredOppAgentDist":0, \
+    "OurBaseDist":-3, \
+    "":-10, \
+    "":-15, \
+    "":1, \
+    "":20, \
+    "":2, \
+    "":-20, \
+    "":2}
+
     """
     A Dummy agent to serve as an example of the necessary agent structure.
     You should look at baselineTeam.py for more details about how to
@@ -101,18 +114,6 @@ class myAgent(CaptureAgent) :
 class FirstAgent(myAgent) :
 
     count = 0
-    weight={"EatenPallet":10, \
-    "":-3, \
-    "":1, \
-    "":0, \
-    "":-3, \
-    "":-10, \
-    "":-15, \
-    "":1, \
-    "":20, \
-    "":2, \
-    "":-20, \
-    "":2}
 
     def probability(self, gameState, action) :
         return 1/len(gameState.getLegalActions(self.index))
@@ -256,7 +257,6 @@ class FirstAgent(myAgent) :
 class SecondAgent(myAgent) :
 
     count = 0
-    weight=[10,-3,1,0,-3,-10,-15,1,20,2,-20,2]
 
     def probability(self, gameState, action) :
         return 1/len(gameState.getLegalActions(self.index))
