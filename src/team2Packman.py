@@ -38,13 +38,13 @@ class myAgent(CaptureAgent) :
     "OppAgentDist":1, \
     "ScaredOppAgentDist":0, \
     "OurBaseDist":-3, \
-    "":-10, \
-    "":-15, \
-    "":1, \
-    "":20, \
-    "":2, \
+    "OurBaseDistInMax5":-10, \
+    "OurBaseDistUnder2":-15, \
+    "OppAgentKill":1, \
+    "OppAgentDist":20, \
+    "ScaredAgentDist":2, \
     "":-20, \
-    "":2}
+    "DefensePointDist":2}
 
     """
     A Dummy agent to serve as an example of the necessary agent structure.
