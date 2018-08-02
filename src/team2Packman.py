@@ -391,6 +391,9 @@ class FirstAgent(myAgent) :
         if (foodLeft - len(self.getFood(successor).asList())) is 1 :
             FirstAgent.count += 1
 
+        self.FirstHistory.append(choice)
+        print ("First : ",choice)
+
         return choice
 
     def chooseAction(self, gameState):
@@ -702,6 +705,9 @@ class SecondAgent(myAgent) :
 
         if (foodLeft - len(self.getFood(successor).asList())) is 1 :
             FirstAgent.count += 1
+
+        self.SecondHistory.append(choice)
+        print("Second : ",choice)
 
         return choice
 
