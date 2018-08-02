@@ -45,6 +45,7 @@ class myAgent(CaptureAgent) :
     "OurBaseOppAgentDist":2, \
     "ScaredAgentDist":-20, \
     "DefensePointDist":2}
+    GameTime = 0
 
     """
     A Dummy agent to serve as an example of the necessary agent structure.
@@ -78,20 +79,6 @@ class myAgent(CaptureAgent) :
         '''
         self.start = gameState.getAgentPosition(self.index)
         self.isRed = gameState.isOnRedTeam(self.index)
-
-    def chooseAction(self, gameState):
-        """
-        Picks among actions randomly.
-        """
-        actions = gameState.getLegalActions(self.index)
-
-        '''
-        You should change this in your own agent.
-        '''
-
-        move = self.chooseMove(gameState)[1]
-
-        return move
 
     def getSuccessor(self, gameState, action):
         """
@@ -257,10 +244,12 @@ class FirstAgent(myAgent) :
 
         return saves
 
-    def HowToAction(self, gameState): #30X14
-        LeftTime = gameState.data.TimeLeft
+    def HowToAction(self, gameState): #30X14 오승빈
+        self.GameTime += 1
+        LeftTime = 300 - self.GameTime
+        
         Score = gameState.getScore()
-        RB = gameState.isRed()
+        RB = self.isRed
         if (Score > 0 and RB == True):
             IsWin = True
         else:
@@ -275,21 +264,31 @@ class FirstAgent(myAgent) :
         else: #when our team is blue
             FAPos = gameState.getAgentPosition(2) #Blue First Agent Position
             SAPos = gameState.getAgentPosition(3) #Blue Second Agent Position
-            if (FAPos[0]==29 and FAPos[1]>0 and SAPOs[0]==29 and SAPOs[1]>0):
+            if (FAPos[0]==29 and FAPos[1]>0 and SAPos[0]==29 and SAPos[1]>0):
                 InitialTime = True
             else:
                 InitialTime = False
 
-        if (LeftTime <= 120 and IsWin==False):
+        if (LeftTime <= 30 and IsWin==False):
             return "TimeAttack"
-        elif (LeftTime <= 120 and IsWin==True):
+        elif (LeftTime <= 30 and IsWin==True):
             return "TimeDefense"
         elif (InitialTime == True):
             return "InitialTime"
         else:
             return "AI"        
 
-    def chooseTimeAttack(self,gameState):
+    def chooseTimeAttack(self,gameState): #오승빈
+        if (gameState.isRed==True):
+            Team = "Red"
+            RedFirst = gameState.getLegalActions(0)
+            RedSecond = gameState.getLegalActions(1)
+        else:
+            Team = "Blue"
+            BlueFirst = gameState.getLegalActions(2)
+            BlueSecond = gameState.getLegalActions(3)
+
+    def chooseTimeDefense(self, gameState): #오승빈
         if (gameState.isRed==True):
             Team = "Red"
         else:
@@ -299,27 +298,13 @@ class FirstAgent(myAgent) :
         BlueFirst = gameState.getLegalActions(2)
         BlueSecond = gameState.getLegalActions(3)
 
-    def chooseTimeDefense(self, gameState):
-        if (gameState.isRed==True):
-            Team = "Red"
-        else:
-            Team = "Blue"
-        RedFirst = gameState.getLegalActions(0)
-        RedSecond = gameState.getLegalActions(1)
-        BlueFirst = gameState.getLegalActions(2)
-        BlueSecond = gameState.getLegalActions(3)
-
-    def chooseInitial(self, gameState):
+    def chooseInitial(self, gameState): #오승빈
         if (gameState.isRed == True):
-            Team = "Red"
             return Directions.NORTH
         else:
-            Team = "Blue"
             return Directions.SOUTH
 
-
-    def chooseMove(self, gameState):
-
+    def chooseMove(self, gameState): #오승빈
         if(abs(gameState.getAgentPosition(self.index)[0]-self.start[0])<=14) :
             FirstAgent.count=0
 
@@ -331,10 +316,10 @@ class FirstAgent(myAgent) :
         selection = self.HowToAction(gameState) #AI가 필요한지 노가다가 필요한지 결정
         if (selection == "AI"):
             choice = self.value(gameState, 0, foodLeft,float("-inf"),float("inf")) #AI사용
-        elif (selection == "TimeAttack"):
-            choice = self.chooseTimeAttack(gameState) #시간이 얼마 남지 않았는데 지고 있을때
-        elif (selection == "TimeDefense"):
-            choice = self.chooseTimeDefense(gameState) #시간이 얼마 남지 않았는데 이기고 있을때
+        #elif (selection == "TimeAttack"):
+        #    choice = self.chooseTimeAttack(gameState) #시간이 얼마 남지 않았는데 지고 있을때
+        #elif (selection == "TimeDefense"):
+        #    choice = self.chooseTimeDefense(gameState) #시간이 얼마 남지 않았는데 이기고 있을때
         elif (selection == "InitialTime"):
             choice = self.chooseInitial(gameState) #처음 시작할때
         
@@ -348,6 +333,20 @@ class FirstAgent(myAgent) :
             FirstAgent.count += 1
 
         return choice
+
+    def chooseAction(self, gameState):
+        """
+        Picks among actions randomly.
+        """
+        actions = gameState.getLegalActions(self.index)
+
+        '''
+        You should change this in your own agent.
+        '''
+
+        move = self.chooseMove(gameState)[1]
+
+        return move
 
 class SecondAgent(myAgent) :
 
@@ -499,3 +498,15 @@ class SecondAgent(myAgent) :
             FirstAgent.count += 1
 
         return choice
+
+    def chooseAction(self, gameState):
+        """
+        Picks among actions randomly.
+        """
+        actions = gameState.getLegalActions(self.index)
+
+        '''
+        You should change this in your own agent.
+        '''
+        move = self.chooseMove(gameState)[1]
+        return move
