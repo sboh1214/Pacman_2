@@ -7,7 +7,6 @@ import game
 from util import nearestPoint
 from capture import GameState
 from game import AgentState
-from capture import *
 
 #################
 # Team creation #
