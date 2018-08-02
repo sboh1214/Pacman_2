@@ -677,10 +677,15 @@ class SecondAgent(myAgent) :
                 elif (item is "SOUTH"):
                     return [0,Directions.SOUTH]
                 elif (item is "NORTH"):
+<<<<<<< HEAD
                     return [0,Directions.NORTH]
                 else:
                     return [0,Directions.STOP]
             return [0,Directions.STOP]
+=======
+                    return Directions.NORTH
+            return Directions.STOP
+>>>>>>> parent of 388708a... asfd
         else:
             BlueSecond = gameState.getLegalActions(blueIndex[1])
             for item in BlueSecond:
@@ -691,10 +696,15 @@ class SecondAgent(myAgent) :
                 elif (item is "SOUTH"):
                     return [0,Directions.SOUTH]
                 elif (item is "NORTH"):
+<<<<<<< HEAD
                     return [0,Directions.NORTH]
                 else:
                     return [0,Directions.STOP]
             return [0,Directions.STOP]
+=======
+                    return Directions.NORTH
+            return Directions.STOP
+>>>>>>> parent of 388708a... asfd
 
     def chooseMove(self, gameState): #오승빈
         if(abs(gameState.getAgentPosition(self.index)[0]-self.start[0])<=14) :
