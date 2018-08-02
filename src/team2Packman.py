@@ -220,7 +220,7 @@ class FirstAgent(myAgent) :
                 if (saves[0] < alpha ):
                     return saves
 
-                beta = min(alpha, saves[0])
+                beta = min(beta, saves[0])
 
         return saves
 
@@ -444,7 +444,7 @@ class SecondAgent(myAgent) :
                 if (saves[0] < alpha ):
                     return saves
 
-                beta = min(alpha, saves[0])
+                beta = min(beta, saves[0])
 
         return saves
 
