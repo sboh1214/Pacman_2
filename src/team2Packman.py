@@ -321,6 +321,7 @@ class FirstAgent(myAgent) :
             choice = self.chooseTimeDefense(gameState) #시간이 얼마 남지 않았는데 이기고 있을때
         elif (selection == "InitialTime"):
             choice = self.chooseInitial(gameState) #처음 시작할때
+        
         else:
             choice = self.value(gameState, 0, foodLeft,float("-inf"),float("inf"))
 
