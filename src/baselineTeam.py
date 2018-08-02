@@ -120,7 +120,7 @@ class FirstAgent(myAgent) :
         return terminal
 
     def value(self, gameState, depth, foodLeft, alpha, beta) :
-        if depth >= 5 :
+        if depth >= 1 :
             return self.terminalEvaluation(gameState, foodLeft)
         elif depth%2 == 0 :
             return self.maxValue(gameState, depth, alpha, beta)
