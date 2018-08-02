@@ -368,7 +368,9 @@ class FirstAgent(myAgent) :
                     return Directions.EAST
                 elif (item is "SOUTH"):
                     return Directions.SOUTH
-            return Directions.NORTH
+                elif (item is "NORTH"):
+                    return Directions.NORTH
+            return Directions.STOP
         else:
             BlueFirst = gameState.getLegalActions(blueIndex[0])
             for item in BlueFirst:
@@ -378,7 +380,9 @@ class FirstAgent(myAgent) :
                     return Directions.EAST
                 elif (item is "SOUTH"):
                     return Directions.SOUTH
-            return Directions.NORTH
+                elif (item is "NORTH"):
+                    return Directions.NORTH
+            return Directions.STOP
 
     def chooseMove(self, gameState): #오승빈
         if(abs(gameState.getAgentPosition(self.index)[0]-self.start[0])<=14) :
@@ -701,7 +705,9 @@ class SecondAgent(myAgent) :
                     return Directions.EAST
                 elif (item is "SOUTH"):
                     return Directions.SOUTH
-            return Directions.NORTH
+                elif (item is "NORTH"):
+                    return Directions.NORTH
+            return Directions.STOP
         else:
             BlueSecond = gameState.getLegalActions(blueIndex[1])
             for item in BlueSecond:
@@ -711,8 +717,9 @@ class SecondAgent(myAgent) :
                     return Directions.EAST
                 elif (item is "SOUTH"):
                     return Directions.SOUTH
-            return Directions.NORTH
-
+                elif (item is "NORTH"):
+                    return Directions.NORTH
+            return Directions.STOP
 
     def chooseMove(self, gameState): #오승빈
         if(abs(gameState.getAgentPosition(self.index)[0]-self.start[0])<=14) :
