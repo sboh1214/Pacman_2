@@ -305,8 +305,8 @@ class FirstAgent(myAgent) :
             return "TimeDefense"
         elif (InitialTime == True):
             return "InitialTime"
-        elif (len(self.FirstHistory) > 1):
-            if (self.FirstHistory[-1]==self.FirstHistory[-2]):
+        elif (len(self.FirstHistory) > 3):
+            if (self.FirstHistory[-1]==self.FirstHistory[-3] and self.FirstHistory[-2]==self.FirstHistory[-4]):
                 return "Thrashing"
         else:
             return "AI"        
@@ -602,8 +602,8 @@ class SecondAgent(myAgent) :
             return "TimeDefense"
         elif (InitialTime == True):
             return "InitialTime"
-        elif (len(self.SecondHistory) > 1):
-            if (self.SecondHistory[-1]==self.SecondHistory[-2]):
+        elif (len(self.SecondHistory) > 3):
+            if (self.SecondHistory[-1]==self.SecondHistory[-3] and self.SecondHistory[-2]==self.SecondHistory[-4]):
                 return "Thrashing"
         else:
             return "AI"        
