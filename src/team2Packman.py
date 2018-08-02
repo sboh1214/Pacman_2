@@ -33,7 +33,7 @@ def createTeam(firstIndex, secondIndex, isRed,
 
 class myAgent(CaptureAgent) :
 
-    weight={"PalletNum":10, \
+    weight={"PalletNum":30, \
     "NearestPallet":-3, \
     "EnemyBaseOppAgentDist":-1, \
     "ScaredOppAgentDist":0, \
@@ -120,37 +120,50 @@ class FirstAgent(myAgent) :
         terminal = [foodLeft-len(foodLeft1), 'Stop']
         foodNearest = float("inf")
 
-        for a in foodLeft1 : #Pallet 섭취 여부와 가장 가까운 Pallet의 거리 계산
+        for a in foodLeft1 : #Pellet 섭취 여부와 가장 가까운 Pellet의 거리 계산
             dist = self.getMazeDistance(a, gameState.getAgentPosition(self.index))
             if(dist<foodNearest):
                 foodNearest = dist
         if(len(foodLeft1) == 0) :
             foodNearest = 0
         
+
         if(self.isRed):
-            if(gameState.getScore()> 0) :
-                distanceFromDefend=((self.weight["DefensePointDist"]*self.getMazeDistance(gameState.getAgentPosition(self.index),(12,10)))**2)*(-1)
-            if(gameState.getAgentPosition(2)!='None') :
-                enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(2))
-            if(gameState.getAgentPosition(3)!='None') :
-                enemyDistance2= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(3))
-            enemyDistance=((12- enemyDistance1)** 2)+((12- enemyDistance2)** 2)
-            enemyDistance/=2
+            if(gameState.getAgentPosition(self.index)>=15):
+                if(gameState.getScore()> 0) :
+                    distanceFromDefend=((self.weight["DefensePointDist"]*self.getMazeDistance(gameState.getAgentPosition(self.index),(12,10)))**2)*(-1)
+                if(gameState.getAgentPosition(2)!='None') :
+                    enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(2))
+                if(gameState.getAgentPosition(3)!='None') :
+                    enemyDistance2= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(3))
+                enemyDistance=((12- enemyDistance1)** 2)+((12- enemyDistance2)** 2)
+                enemyDistance/=2
+            else:
+                if(gameState.getScore()> 0) :
+                    distanceFromDefend=((self.weight["DefensePointDist"]*self.getMazeDistance(gameState.getAgentPosition(self.index),(12,10)))**2)*(-1)
+
 
         else:
-            if(gameState.getScore()< 0) :
-                distanceFromDefend=((self.weight["DefensePointDist"]* self.getMazeDistance(gameState.getAgentPosition(self.index),(19,5)))**2)*(-1)
-            if(gameState.getAgentPosition(0)!='None') :
-                enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(0))
-            if(gameState.getAgentPosition(1)!='None') :
-                enemyDistance2= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(1))
-            enemyDistance=((12-enemyDistance1)**2)+((12-enemyDistance2)**2)
-            enemyDistance/=2
-        terminal[0] = terminal[0]*self.weight["PalletNum"] + foodNearest*self.weight["NearestPallet"] + distanceFromDefend + self.weight["EnemyBaseOppAgentDist"]
+            if(gameState.getAgentPosition(self.index)<=14):
+                if(gameState.getScore()< 0) :
+                    distanceFromDefend=((self.weight["DefensePointDist"]* self.getMazeDistance(gameState.getAgentPosition(self.index),(19,5)))**2)*(-1)
+                if(gameState.getAgentPosition(0)!='None') :
+                    enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(0))
+                if(gameState.getAgentPosition(1)!='None') :
+                    enemyDistance2= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(1))
+                enemyDistance=((12-enemyDistance1)**2)+((12-enemyDistance2)**2)
+                enemyDistance/=2
+            else:
+                 if(gameState.getScore()< 0) :
+                    distanceFromDefend=((self.weight["DefensePointDist"]* self.getMazeDistance(gameState.getAgentPosition(self.index),(19,5)))**2)*(-1)
+
+
+        terminal[0] = terminal[0]*self.weight["PalletNum"] + foodNearest*self.weight["NearestPallet"] + distanceFromDefend + self.weight["EnemyBaseOppAgentDist"]*enemyDistance
         return terminal
     
     def value(self, gameState, depth, foodLeft, alpha, beta) :
         if depth >= 5 :
+
             return self.terminalEvaluation(gameState, foodLeft)
         elif depth%2 == 0 :
             return self.maxValue(gameState, depth, alpha, beta)
@@ -321,6 +334,7 @@ class FirstAgent(myAgent) :
             choice = self.chooseTimeDefense(gameState) #시간이 얼마 남지 않았는데 이기고 있을때
         elif (selection == "InitialTime"):
             choice = self.chooseInitial(gameState) #처음 시작할때
+        
         else:
             choice = self.value(gameState, 0, foodLeft,float("-inf"),float("inf"))
 
@@ -367,7 +381,7 @@ class SecondAgent(myAgent) :
             enemyDistance/=2
 
         
-        terminal[0] = terminal[0]*self.weight["PalletNum"] + foodNearest*self.weight["NearestPallet"] + distanceFromDefend + self.weight["EnemyBaseOppAgentDist"]
+        terminal[0] = terminal[0]*self.weight["PalletNum"] + foodNearest*self.weight["NearestPallet"] + distanceFromDefend + self.weight["EnemyBaseOppAgentDist"]*enemyDistance
         return terminal
 
     def value(self, gameState, depth, foodLeft, alpha, beta) :
