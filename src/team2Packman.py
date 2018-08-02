@@ -8,12 +8,9 @@ from util import nearestPoint
 from capture import GameState
 from game import AgentState
 from capture import AgentRules
-<<<<<<< HEAD
-from game import Configuration
-=======
 from game import Agent
 from game import GameStateData
->>>>>>> 08abc5f89e6bb621df36f85f4bd26ab11035729d
+from game import Configuration
 
 #################
 # Team creation #
@@ -129,17 +126,10 @@ class FirstAgent(myAgent) :
 
         if(self.isRed): # RED 일때
             enemyDistance= 0
-<<<<<<< HEAD
-            if(gameState.getAgentPosition(2) is not 'None') :
-                enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(2))
-                if(gameState.getAgentPosition(2)[0]>= 15 and enemyDistance1<= 6): #적과의 거리
-                    if(State.data.agentStates[2].scaredTimer <= 0 ):
-=======
             if(gameState.getAgentPosition(blueIndex[0])!='None') :
                 enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(blueIndex[0]))
                 if(gameState.getAgentPosition(blueIndex[0])[0]>= 15 and enemyDistance1<= 6): #적과의 거리
                     if(state.data.agentStates[blueIndex[0]].scaredTimer <= 0 ):
->>>>>>> 08abc5f89e6bb621df36f85f4bd26ab11035729d
                         enemyDistance-= (7-enemyDistance1)** self.weight["EnemyBaseOppAgentDist"]
                     else:
                         enemyDistance=enemyDistance1*["ScaredOppAgentDist"]
