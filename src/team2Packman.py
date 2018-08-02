@@ -348,6 +348,12 @@ class FirstAgent(myAgent) :
         else:
             return Directions.SOUTH
 
+    def chooseMustMove(self, gameState): #오승빈
+        if (gameState.isRed == True):
+            return Directions.EAST
+        else:
+            return Directions.WEST
+
     def chooseMove(self, gameState): #오승빈
         if(abs(gameState.getAgentPosition(self.index)[0]-self.start[0])<=14) :
             FirstAgent.count=0
@@ -609,6 +615,9 @@ class SecondAgent(myAgent) :
             return "TimeDefense"
         elif (InitialTime == True):
             return "InitialTime"
+        elif (len(self.SecondHistory) > 3):
+            if (self.SecondHistory[-1]==self.SecondHistory[-3] and self.SecondHistory[-2]==self.SecondHistory[-4]):
+                return "Thrashing"
         else:
             return "AI"        
 
@@ -642,6 +651,12 @@ class SecondAgent(myAgent) :
         else:
             return Directions.SOUTH
 
+    def chooseMustMove(self, gameState): #오승빈
+        if (gameState.isRed == True):
+            return Directions.EAST
+        else:
+            return Directions.WEST
+
     def chooseMove(self, gameState): #오승빈
         if(abs(gameState.getAgentPosition(self.index)[0]-self.start[0])<=14) :
             FirstAgent.count=0
@@ -660,9 +675,7 @@ class SecondAgent(myAgent) :
            choice = self.chooseTimeDefense(gameState) #시간이 얼마 남지 않았는데 이기고 있을때
         elif (selection == "InitialTime"):
             choice = self.chooseInitial(gameState) #처음 시작할때
-        elif (len(self.SecondHistory) > 3):
-            if (self.SecondHistory[-1]==self.SecondHistory[-3] and self.SecondHistory[-2]==self.SecondHistory[-4]):
-                return "Thrashing"
+        
         else:
             choice = self.value(gameState, 0, foodLeft,float("-inf"),float("inf"))
 
