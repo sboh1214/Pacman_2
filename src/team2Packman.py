@@ -99,7 +99,7 @@ class myAgent(CaptureAgent) :
 class FirstAgent(myAgent) :
 
     count = 0
-    
+    FirstHistory = []    
     def probability(self, gameState, action) :
         return 1/len(gameState.getLegalActions(self.index))
 
@@ -312,6 +312,9 @@ class FirstAgent(myAgent) :
             return "TimeDefense"
         elif (InitialTime == True):
             return "InitialTime"
+        elif (len(self.FirstHistory) > 3):
+            if (self.FirstHistory[-1]==self.FirstHistory[-3] and self.FirstHistory[-2]==self.FirstHistory[-4]):
+                return "Thrashing"
         else:
             return "AI"        
 
@@ -392,7 +395,8 @@ class FirstAgent(myAgent) :
 class SecondAgent(myAgent) :
 
     count = 0
-    
+    SecondHistory = []
+
     def probability(self, gameState, action) :
         return 1/len(gameState.getLegalActions(self.index))
 
@@ -650,13 +654,15 @@ class SecondAgent(myAgent) :
         selection = self.HowToAction(gameState) #AI가 필요한지 노가다가 필요한지 결정
         if (selection == "AI"):
             choice = self.value(gameState, 0, foodLeft,float("-inf"),float("inf")) #AI사용
-        #elif (selection == "TimeAttack"):
-        #    choice = self.chooseTimeAttack(gameState) #시간이 얼마 남지 않았는데 지고 있을때
-        #elif (selection == "TimeDefense"):
-        #    choice = self.chooseTimeDefense(gameState) #시간이 얼마 남지 않았는데 이기고 있을때
+        elif (selection == "TimeAttack"):
+           choice = self.chooseTimeAttack(gameState) #시간이 얼마 남지 않았는데 지고 있을때
+        elif (selection == "TimeDefense"):
+           choice = self.chooseTimeDefense(gameState) #시간이 얼마 남지 않았는데 이기고 있을때
         elif (selection == "InitialTime"):
             choice = self.chooseInitial(gameState) #처음 시작할때
-        
+        elif (len(self.SecondHistory) > 3):
+            if (self.SecondHistory[-1]==self.SecondHistory[-3] and self.SecondHistory[-2]==self.SecondHistory[-4]):
+                return "Thrashing"
         else:
             choice = self.value(gameState, 0, foodLeft,float("-inf"),float("inf"))
 
