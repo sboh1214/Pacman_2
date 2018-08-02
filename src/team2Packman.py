@@ -37,9 +37,9 @@ def createTeam(firstIndex, secondIndex, isRed,
 
 class myAgent(CaptureAgent) :
 
-    weight={"PalletNum":30, \
-    "NearestPallet":-3, \
-    "EnemyBaseOppAgentDist":3, \
+    weight={"PalletNum":50, \
+    "NearestPallet":-5, \
+    "EnemyBaseOppAgentDist":1, \
     "ScaredOppAgentDist":0, \
     "OurBaseDist":-3, \
     "OurBaseDistInMax5":-10, \
@@ -126,13 +126,13 @@ class FirstAgent(myAgent) :
             if(self.isRed): # RED 일때
                 enemyDistance= 0
                 distanceFromDefend = 0
-                if(gameState.getAgentPosition(blueIndex[0])!=None) :
+                if(gameState.getAgentPosition(blueIndex[0]) != None) :
                     enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(blueIndex[0]))
                     if(gameState.getAgentPosition(blueIndex[0])[0]>= 15 and enemyDistance1<= 6): #적과의 거리
-                        if(gameState.data.agentStates[blueIndex[0]].scaredTimer <= 0 ):
-                            enemyDistance-= (7-enemyDistance1)** self.weight["EnemyBaseOppAgentDist"]
-                        else:
+                        if(gameState.data.agentStates[blueIndex[0]].scaredTimer > 0 ):
                             enemyDistance=enemyDistance1*["ScaredOppAgentDist"]
+                        else:
+                            enemyDistance-= (7-enemyDistance1)** self.weight["EnemyBaseOppAgentDist"]
                     if(gameState.getAgentPosition(blueIndex[0])[0]<= 14 and enemyDistance1<= 6):
                         if(gameState.data.agentStates[self.index].scaredTimer <= 0 ):
                             enemyDistance+= (7-enemyDistance1)* self.weight["OurBaseOppAgentDist"]
@@ -142,16 +142,17 @@ class FirstAgent(myAgent) :
                 if(gameState.getAgentPosition(blueIndex[1])!=None) :
                     enemyDistance2= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(blueIndex[1]))
                     if(gameState.getAgentPosition(blueIndex[1])[0]>= 15 and enemyDistance2<= 6): #적과의 거리
-                        if(gameState.data.blueIndex[1].scaredTimer <= 0 ):
-                            enemyDistance-= (7-enemyDistance2)** self.weight["EnemyBaseOppAgentDist"]
-                        else:
+                        if(gameState.data.blueIndex[1].scaredTimer > 0 ):
                             enemyDistance=enemyDistance2*["ScaredOppAgentDist"]
-                    if(gameState.getAgentPosition(blueIndex[1])[0]<= 14 and enemyDistance2<= 6):
-                        if(gameState.data.agentStates[self.index].scaredTimer <= 0 ):
-                            enemyDistance+= (7-enemyDistance2)* self.weight["OurBaseOppAgentDist"]
                         else:
-                            enemyDistance-= (7-enemyDistance2)** self.weight["ScaredAgentDist"]
+                            enemyDistance-= (7-enemyDistance2)** self.weight["EnemyBaseOppAgentDist"]
                             
+                    if(gameState.getAgentPosition(blueIndex[1])[0]<= 14 and enemyDistance2<= 6):
+                        if(gameState.data.agentStates[self.index].scaredTimer > 0 ):
+                            enemyDistance-= (7-enemyDistance2)** self.weight["ScaredAgentDist"]
+                        else:
+                            
+                            enemyDistance+= (7-enemyDistance2)* self.weight["OurBaseOppAgentDist"]
                 if(gameState.getScore()> 0) :
                     distanceFromDefend-=(self.getMazeDistance(gameState.getAgentPosition(self.index), (12,10) ))**2
 
@@ -162,28 +163,32 @@ class FirstAgent(myAgent) :
                 if(gameState.getAgentPosition(redIndex[0])!=None) :
                     enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(redIndex[0]))
                     if(gameState.getAgentPosition(redIndex[0])[0]<= 14 and enemyDistance1<= 6): #적과의 거리
-                        if(gameState.data.agentStates[redIndex[0]].scaredTimer <= 0 ):
-                            enemyDistance-= (7-enemyDistance1)** self.weight["EnemyBaseOppAgentDist"]
-                        else:
+                        if(gameState.data.agentStates[redIndex[0]].scaredTimer > 0 ):
                             enemyDistance=enemyDistance1*["ScaredOppAgentDist"]
-                    if(gameState.getAgentPosition(redIndex[0])[0]>= 15 and enemyDistance1<= 6):
-                        if(gameState.data.agentStates[self.index].scaredTimer <= 0 ):
-                            enemyDistance+= (7-enemyDistance1)* self.weight["OurBaseOppAgentDist"]
                         else:
+                            enemyDistance-= (7-enemyDistance1)** self.weight["EnemyBaseOppAgentDist"]
+                            
+                    if(gameState.getAgentPosition(redIndex[0])[0]>= 15 and enemyDistance1<= 6):
+                        if(gameState.data.agentStates[self.index].scaredTimer > 0 ):
                             enemyDistance-= (7-enemyDistance1)** self.weight["ScaredAgentDist"]
+                        else:
+                            enemyDistance+= (7-enemyDistance1)* self.weight["OurBaseOppAgentDist"]
+                            
 
                 if(gameState.getAgentPosition(redIndex[1])!=None) :
                     enemyDistance2= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(redIndex[1]))
                     if(gameState.getAgentPosition(redIndex[1])[0]<= 14 and enemyDistance2<= 6): #적과의 거리
-                        if(gameState.data.redIndex[1].scaredTimer <= 0 ):
-                            enemyDistance-= (7-enemyDistance2)** self.weight["EnemyBaseOppAgentDist"]
-                        else:
+                        if(gameState.data.redIndex[1].scaredTimer > 0 ):
                             enemyDistance=enemyDistance2*["ScaredOppAgentDist"]
-                    if(gameState.getAgentPosition(redIndex[1])[0]>= 15 and enemyDistance2<= 6):
-                        if(gameState.data.agentStates[self.index].scaredTimer <= 0 ):
-                            enemyDistance+= (7-enemyDistance2)* self.weight["OurBaseOppAgentDist"]
                         else:
+                            enemyDistance-= (7-enemyDistance2)** self.weight["EnemyBaseOppAgentDist"]
+                            
+                    if(gameState.getAgentPosition(redIndex[1])[0]>= 15 and enemyDistance2<= 6):
+                        if(gameState.data.agentStates[self.index].scaredTimer > 0 ):
                             enemyDistance-= (7-enemyDistance2)** self.weight["ScaredAgentDist"]
+                        else:
+                            enemyDistance+= (7-enemyDistance2)* self.weight["OurBaseOppAgentDist"]
+                            
                 if(gameState.getScore()< 0) :
                     distanceFromDefend-=(self.weight["DefensePointDist"]* self.getMazeDistance(gameState.getAgentPosition(self.index), (19,5) ))**2
             terminal[0] = terminal[0]*self.weight["PalletNum"] + foodNearest*self.weight["NearestPallet"] + distanceFromDefend + enemyDistance
@@ -192,7 +197,7 @@ class FirstAgent(myAgent) :
             return 10
     
     def value(self, gameState, depth, foodLeft, alpha, beta) :
-        if depth >= 5 :
+        if depth >= 1 :
 
             return self.terminalEvaluation(gameState, foodLeft)
         elif depth%2 == 0 :
@@ -275,6 +280,8 @@ class FirstAgent(myAgent) :
         return saves
 
     def HowToAction(self, gameState): #30X14 오승빈
+        redIndex=gameState.getRedTeamIndices()
+        blueIndex=gameState.getBlueTeamIndices()
         self.GameTime += 1
         LeftTime = 300 - self.GameTime
         
@@ -285,15 +292,15 @@ class FirstAgent(myAgent) :
         else:
             IsWin = False
         if (RB==True): #When our team is red
-            FAPos = gameState.getAgentPosition(0) #Red First Agent Position
-            SAPOs = gameState.getAgentPosition(1) #Red Second Agent Position
+            FAPos = gameState.getAgentPosition(redIndex[0]) #Red First Agent Position
+            SAPOs = gameState.getAgentPosition(redIndex[1]) #Red Second Agent Position
             if (FAPos[0]==0 and FAPos[1]<13 and SAPOs[0]==0 and SAPOs[1]<13):
                 InitialTime = True
             else:
                 InitialTime = False
         else: #when our team is blue
-            FAPos = gameState.getAgentPosition(2) #Blue First Agent Position
-            SAPos = gameState.getAgentPosition(3) #Blue Second Agent Position
+            FAPos = gameState.getAgentPosition(blueIndex[0]) #Blue First Agent Position
+            SAPos = gameState.getAgentPosition(blueIndex[1]) #Blue Second Agent Position
             if (FAPos[0]==29 and FAPos[1]>0 and SAPos[0]==29 and SAPos[1]>0):
                 InitialTime = True
             else:
@@ -309,24 +316,28 @@ class FirstAgent(myAgent) :
             return "AI"        
 
     def chooseTimeAttack(self,gameState): #오승빈
+        redIndex=gameState.getRedTeamIndices()
+        blueIndex=gameState.getBlueTeamIndices()
         if (gameState.isRed==True):
             Team = "Red"
-            RedFirst = gameState.getLegalActions(0)
-            RedSecond = gameState.getLegalActions(1)
+            RedFirst = gameState.getLegalActions(redIndex[0])
+            RedSecond = gameState.getLegalActions(redIndex[1])
         else:
             Team = "Blue"
-            BlueFirst = gameState.getLegalActions(2)
-            BlueSecond = gameState.getLegalActions(3)
+            BlueFirst = gameState.getLegalActions(blueIndex[0])
+            BlueSecond = gameState.getLegalActions(blueIndex[1])
 
     def chooseTimeDefense(self, gameState): #오승빈
+        redIndex=gameState.getRedTeamIndices()
+        blueIndex=gameState.getBlueTeamIndices()
         if (gameState.isRed==True):
             Team = "Red"
         else:
             Team = "Blue"
-        RedFirst = gameState.getLegalActions(0)
-        RedSecond = gameState.getLegalActions(1)
-        BlueFirst = gameState.getLegalActions(2)
-        BlueSecond = gameState.getLegalActions(3)
+        RedFirst = gameState.getLegalActions(redIndex[0])
+        RedSecond = gameState.getLegalActions(redIndex[1])
+        BlueFirst = gameState.getLegalActions(blueIndex[0])
+        BlueSecond = gameState.getLegalActions(blueIndex[1])
 
     def chooseInitial(self, gameState): #오승빈
         if (gameState.isRed == True):
@@ -408,28 +419,32 @@ class SecondAgent(myAgent) :
                 if(gameState.getAgentPosition(blueIndex[0])!=None) :
                     enemyDistance1= self.getMazeDistance( gameState.getAgentPosition(self.index),gameState.getAgentPosition(blueIndex[0]) )
                     if(gameState.getAgentPosition(blueIndex[0])[0]>= 15 and enemyDistance1<= 6): #적과의 거리
-                        if(gameState.data.agentStates[blueIndex[0]].scaredTimer <= 0 ):
-                            enemyDistance-= (7-enemyDistance1)** self.weight["EnemyBaseOppAgentDist"]
-                        else:
+                        if(gameState.data.agentStates[blueIndex[0]].scaredTimer > 0 ):
                             enemyDistance=enemyDistance1*["ScaredOppAgentDist"]
-                    if(gameState.getAgentPosition(blueIndex[0])[0]<= 14 and enemyDistance1<= 6):
-                        if(gameState.data.agentStates[self.index].scaredTimer <= 0 ):
-                            enemyDistance+= (7-enemyDistance1)* self.weight["OurBaseOppAgentDist"]
                         else:
+                            enemyDistance-= (7-enemyDistance1)** self.weight["EnemyBaseOppAgentDist"]
+                            
+                    if(gameState.getAgentPosition(blueIndex[0])[0]<= 14 and enemyDistance1<= 6):
+                        if(gameState.data.agentStates[self.index].scaredTimer > 0 ):
                             enemyDistance-= (7-enemyDistance1)** self.weight["ScaredAgentDist"]
+                        else:
+                            enemyDistance+= (7-enemyDistance1)* self.weight["OurBaseOppAgentDist"]
+                           
 
                 if(gameState.getAgentPosition(blueIndex[1])!=None) :
                     enemyDistance2= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(blueIndex[1]))
                     if(gameState.getAgentPosition(blueIndex[1])[0]>= 15 and enemyDistance2<= 6): #적과의 거리
-                        if(gameState.data.blueIndex[1].scaredTimer <= 0 ):
-                            enemyDistance-= (7-enemyDistance2)** self.weight["EnemyBaseOppAgentDist"]
-                        else:
+                        if(gameState.data.blueIndex[1].scaredTimer > 0 ):
                             enemyDistance=enemyDistance2*["ScaredOppAgentDist"]
-                    if(gameState.getAgentPosition(blueIndex[1])[0]<= 14 and enemyDistance2<= 6):
-                        if(gameState.data.agentStates[self.index].scaredTimer <= 0 ):
-                            enemyDistance+= (7-enemyDistance2)* self.weight["OurBaseOppAgentDist"]
                         else:
+                            enemyDistance-= (7-enemyDistance2)** self.weight["EnemyBaseOppAgentDist"]
+                            
+                    if(gameState.getAgentPosition(blueIndex[1])[0]<= 14 and enemyDistance2<= 6):
+                        if(gameState.data.agentStates[self.index].scaredTimer > 0 ):
                             enemyDistance-= (7-enemyDistance2)** self.weight["ScaredAgentDist"]
+                        else:
+                            enemyDistance+= (7-enemyDistance2)* self.weight["OurBaseOppAgentDist"]
+                            
                             
                 if(gameState.getScore()> 0) :
                     distanceFromDefend-=(self.getMazeDistance(gameState.getAgentPosition(self.index), (12,4) ))**2
@@ -439,28 +454,32 @@ class SecondAgent(myAgent) :
                 if(gameState.getAgentPosition(redIndex[0])!=None) :
                     enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(redIndex[0]))
                     if(gameState.getAgentPosition(redIndex[0])[0]<= 14 and enemyDistance1<= 6): #적과의 거리
-                        if(gameState.data.agentStates[redIndex[0]].scaredTimer <= 0 ):
-                            enemyDistance-= (7-enemyDistance1)** self.weight["EnemyBaseOppAgentDist"]
-                        else:
+                        if(gameState.data.agentStates[redIndex[0]].scaredTimer > 0 ):
                             enemyDistance=enemyDistance1*["ScaredOppAgentDist"]
-                    if(gameState.getAgentPosition(redIndex[0])[0]>= 15 and enemyDistance1<= 6):
-                        if(gameState.data.agentStates[self.index].scaredTimer <= 0 ):
-                            enemyDistance+= (7-enemyDistance1)* self.weight["OurBaseOppAgentDist"]
                         else:
+                            enemyDistance-= (7-enemyDistance1)** self.weight["EnemyBaseOppAgentDist"]
+                            
+                    if(gameState.getAgentPosition(redIndex[0])[0]>= 15 and enemyDistance1<= 6):
+                        if(gameState.data.agentStates[self.index].scaredTimer > 0 ):
                             enemyDistance-= (7-enemyDistance1)** self.weight["ScaredAgentDist"]
+                        else:
+                            enemyDistance+= (7-enemyDistance1)* self.weight["OurBaseOppAgentDist"]
+                           
 
                 if(gameState.getAgentPosition(redIndex[1])!=None) :
                     enemyDistance2= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(redIndex[1]))
                     if(gameState.getAgentPosition(redIndex[1])[0]<= 14 and enemyDistance2<= 6): #적과의 거리
-                        if(gameState.data.redIndex[1].scaredTimer <= 0 ):
-                            enemyDistance-= (7-enemyDistance2)** self.weight["EnemyBaseOppAgentDist"]
-                        else:
+                        if(gameState.data.redIndex[1].scaredTimer > 0 ):
                             enemyDistance=enemyDistance2*["ScaredOppAgentDist"]
-                    if(gameState.getAgentPosition(redIndex[1])[0]>= 15 and enemyDistance2<= 6):
-                        if(gameState.data.agentStates[self.index].scaredTimer <= 0 ):
-                            enemyDistance+= (7-enemyDistance2)* self.weight["OurBaseOppAgentDist"]
                         else:
+                            enemyDistance-= (7-enemyDistance2)** self.weight["EnemyBaseOppAgentDist"]
+                            
+                    if(gameState.getAgentPosition(redIndex[1])[0]>= 15 and enemyDistance2<= 6):
+                        if(gameState.data.agentStates[self.index].scaredTimer > 0 ):
                             enemyDistance-= (7-enemyDistance2)** self.weight["ScaredAgentDist"]
+                        else:
+                            enemyDistance+= (7-enemyDistance2)* self.weight["OurBaseOppAgentDist"]
+                            
                 if(gameState.getScore()< 0) :
                     distanceFromDefend-=(self.weight["DefensePointDist"]* self.getMazeDistance(gameState.getAgentPosition(self.index), (19,11) ))**2
         
@@ -471,7 +490,7 @@ class SecondAgent(myAgent) :
             return 10
 
     def value(self, gameState, depth, foodLeft, alpha, beta) :
-        if depth >= 5 :
+        if depth >= 1 :
             return self.terminalEvaluation(gameState, foodLeft)
         elif depth%2 == 0 :
             return self.maxValue(gameState, depth, alpha, beta)
@@ -554,6 +573,8 @@ class SecondAgent(myAgent) :
         return saves
 
     def HowToAction(self, gameState): #30X14 오승빈
+        redIndex=gameState.getRedTeamIndices()
+        blueIndex=gameState.getBlueTeamIndices()
         self.GameTime += 1
         LeftTime = 300 - self.GameTime
         
@@ -564,15 +585,15 @@ class SecondAgent(myAgent) :
         else:
             IsWin = False
         if (RB==True): #When our team is red
-            FAPos = gameState.getAgentPosition(0) #Red First Agent Position
-            SAPOs = gameState.getAgentPosition(1) #Red Second Agent Position
+            FAPos = gameState.getAgentPosition(redIndex[0]) #Red First Agent Position
+            SAPOs = gameState.getAgentPosition(redIndex[1]) #Red Second Agent Position
             if (FAPos[0]==0 and FAPos[1]<13 and SAPOs[0]==0 and SAPOs[1]<13):
                 InitialTime = True
             else:
                 InitialTime = False
         else: #when our team is blue
-            FAPos = gameState.getAgentPosition(2) #Blue First Agent Position
-            SAPos = gameState.getAgentPosition(3) #Blue Second Agent Position
+            FAPos = gameState.getAgentPosition(blueIndex[0]) #Blue First Agent Position
+            SAPos = gameState.getAgentPosition(blueIndex[1]) #Blue Second Agent Position
             if (FAPos[0]==29 and FAPos[1]>0 and SAPos[0]==29 and SAPos[1]>0):
                 InitialTime = True
             else:
@@ -588,24 +609,28 @@ class SecondAgent(myAgent) :
             return "AI"        
 
     def chooseTimeAttack(self,gameState): #오승빈
+        redIndex=gameState.getRedTeamIndices()
+        blueIndex=gameState.getBlueTeamIndices()
         if (gameState.isRed==True):
             Team = "Red"
-            RedFirst = gameState.getLegalActions(0)
-            RedSecond = gameState.getLegalActions(1)
+            RedFirst = gameState.getLegalActions(redIndex[0])
+            RedSecond = gameState.getLegalActions(redIndex[1])
         else:
             Team = "Blue"
-            BlueFirst = gameState.getLegalActions(2)
-            BlueSecond = gameState.getLegalActions(3)
+            BlueFirst = gameState.getLegalActions(blueIndex[0])
+            BlueSecond = gameState.getLegalActions(blueIndex[1])
 
     def chooseTimeDefense(self, gameState): #오승빈
+        redIndex=gameState.getRedTeamIndices()
+        blueIndex=gameState.getBlueTeamIndices()
         if (gameState.isRed==True):
             Team = "Red"
         else:
             Team = "Blue"
-        RedFirst = gameState.getLegalActions(0)
-        RedSecond = gameState.getLegalActions(1)
-        BlueFirst = gameState.getLegalActions(2)
-        BlueSecond = gameState.getLegalActions(3)
+        RedFirst = gameState.getLegalActions(redIndex[0])
+        RedSecond = gameState.getLegalActions(redIndex[1])
+        BlueFirst = gameState.getLegalActions(blueIndex[0])
+        BlueSecond = gameState.getLegalActions(blueIndex[1])
 
     def chooseInitial(self, gameState): #오승빈
         if (gameState.isRed == True):
