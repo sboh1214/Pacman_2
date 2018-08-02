@@ -183,16 +183,6 @@ class FirstAgent(myAgent) :
 
         return saves
 
-    def expValue(self, gameState, depth) :
-        val = 0
-        actions = gameState.getLegalActions(self.index)
-
-        for action in actions:
-            p = self.probability(gameState, action)
-            val += p*self.value(self.getSuccessor(gameState, action), depth+1, len(self.getFood(gameState).asList()),alpha,beta)[0]
-
-        return val
-
     def minValue(self, gameState, depth, alpha, beta):
         saves = [float("inf"), 'Stop']
 
@@ -211,7 +201,7 @@ class FirstAgent(myAgent) :
                 if (saves[0] < alpha ):
                     return saves
 
-                beta = min(alpha, saves[0])
+                beta = min(beta, saves[0])
 
         return saves
 
@@ -418,16 +408,6 @@ class SecondAgent(myAgent) :
 
         return saves
 
-    def expValue(self, gameState, depth) :
-        val = 0
-        actions = gameState.getLegalActions(self.index)
-
-        for action in actions:
-            p = self.probability(gameState, action)
-            val += p*self.value(self.getSuccessor(gameState, action), depth+1, len(self.getFood(gameState).asList()),alpha,beta)[0]
-
-        return val
-
     def minValue(self, gameState, depth, alpha, beta):
         saves = [float("inf"), 'Stop']
 
@@ -446,7 +426,7 @@ class SecondAgent(myAgent) :
                 if (saves[0] < alpha ):
                     return saves
 
-                beta = min(alpha, saves[0])
+                beta = min(beta, saves[0])
 
         return saves
 
