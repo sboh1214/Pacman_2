@@ -8,7 +8,12 @@ from util import nearestPoint
 from capture import GameState
 from game import AgentState
 from capture import AgentRules
+<<<<<<< HEAD
 from game import Configuration
+=======
+from game import Agent
+from game import GameStateData
+>>>>>>> 08abc5f89e6bb621df36f85f4bd26ab11035729d
 
 #################
 # Team creation #
@@ -99,7 +104,6 @@ class FirstAgent(myAgent) :
     count = 0
     distanceFromDefend = 0
     
-
     def probability(self, gameState, action) :
         return 1/len(gameState.getLegalActions(self.index))
 
@@ -109,7 +113,9 @@ class FirstAgent(myAgent) :
 
         terminal = [foodLeft-len(foodLeft1), 'Stop']
         foodNearest = float("inf")
-
+        redIndex=gameState.getRedTeamIndices()
+        blueIndex=gameState.getBlueTeamIndices()
+ 
         for a in foodLeft1 : #Pellet 섭취 여부와 가장 가까운 Pellet의 거리 계산
             dist = self.getMazeDistance(a, gameState.getAgentPosition(self.index))
             if(dist<foodNearest):
@@ -121,45 +127,77 @@ class FirstAgent(myAgent) :
         agentState = AgentState(configuration,True)
         State = agentState.copy()
 
-        if(self.isRed):
+        if(self.isRed): # RED 일때
             enemyDistance= 0
+<<<<<<< HEAD
             if(gameState.getAgentPosition(2) is not 'None') :
                 enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(2))
                 if(gameState.getAgentPosition(2)[0]>= 15 and enemyDistance1<= 6): #적과의 거리
                     if(State.data.agentStates[2].scaredTimer <= 0 ):
+=======
+            if(gameState.getAgentPosition(blueIndex[0])!='None') :
+                enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(blueIndex[0]))
+                if(gameState.getAgentPosition(blueIndex[0])[0]>= 15 and enemyDistance1<= 6): #적과의 거리
+                    if(state.data.agentStates[blueIndex[0]].scaredTimer <= 0 ):
+>>>>>>> 08abc5f89e6bb621df36f85f4bd26ab11035729d
                         enemyDistance-= (7-enemyDistance1)** self.weight["EnemyBaseOppAgentDist"]
                     else:
                         enemyDistance=enemyDistance1*["ScaredOppAgentDist"]
-                if(gameState.getAgentPosition(2)[0]<= 14 and enemyDistance1<= 6):
+                if(gameState.getAgentPosition(blueIndex[0])[0]<= 14 and enemyDistance1<= 6):
                     if(state.data.agentStates[self.index].scaredTimer <= 0 ):
                         enemyDistance+= (7-enemyDistance1)* self.weight["OurBaseOppAgentDist"]
                     else:
                         enemyDistance-= (7-enemyDistance1)** self.weight["ScaredAgentDist"]
 
-            if(gameState.getAgentPosition(3) is not 'None') :
-                enemyDistance2= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(3))
-                if(gameState.getAgentPosition(3)[0]>= 15 and enemyDistance2<= 6): #적과의 거리
-                    if(state.data.agentStates[3].scaredTimer <= 0 ):
+            if(gameState.getAgentPosition(blueIndex[1])!='None') :
+                enemyDistance2= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(blueIndex[1]))
+                if(gameState.getAgentPosition(blueIndex[1])[0]>= 15 and enemyDistance2<= 6): #적과의 거리
+                    if(state.data.blueIndex[1].scaredTimer <= 0 ):
                         enemyDistance-= (7-enemyDistance2)** self.weight["EnemyBaseOppAgentDist"]
                     else:
                         enemyDistance=enemyDistance2*["ScaredOppAgentDist"]
-                if(gameState.getAgentPosition(3)[0]<= 14 and enemyDistance1<= 6):
+                if(gameState.getAgentPosition(blueIndex[1])[0]<= 14 and enemyDistance1<= 6):
                     if(state.data.agentStates[self.index].scaredTimer <= 0 ):
                         enemyDistance+= (7-enemyDistance2)* self.weight["OurBaseOppAgentDist"]
                     else:
                         enemyDistance-= (7-enemyDistance2)** self.weight["ScaredAgentDist"]
                         
-            if(gameState.getScore()> 0) :
-                distanceFromDefend-=(self.getMazeDistance(gameState.getAgentPosition(self.index), (12,10) ))**2
+            '''if(gameState.getScore()> 0) :
+                distanceFromDefend-=(self.getMazeDistance(gameState.getAgentPosition(self.index), (12,10) ))**2'''
 
 
-        else:
-            
-            if(gameState.getScore()< 0) :
-               distanceFromDefend-=(self.weight["DefensePointDist"]* self.getMazeDistance(gameState.getAgentPosition(self.index), (19,5) ))**2
+        else: # BLUE 일때
+            enemyDistance= 0
+            if(gameState.getAgentPosition(redIndex[0])!='None') :
+                enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(redIndex[0]))
+                if(gameState.getAgentPosition(redIndex[0])[0]>= 15 and enemyDistance1<= 6): #적과의 거리
+                    if(state.data.agentStates[redIndex[0]].scaredTimer <= 0 ):
+                        enemyDistance-= (7-enemyDistance1)** self.weight["EnemyBaseOppAgentDist"]
+                    else:
+                        enemyDistance=enemyDistance1*["ScaredOppAgentDist"]
+                if(gameState.getAgentPosition(redIndex[0])[0]<= 14 and enemyDistance1<= 6):
+                    if(state.data.agentStates[self.index].scaredTimer <= 0 ):
+                        enemyDistance+= (7-enemyDistance1)* self.weight["OurBaseOppAgentDist"]
+                    else:
+                        enemyDistance-= (7-enemyDistance1)** self.weight["ScaredAgentDist"]
+
+            if(gameState.getAgentPosition(redIndex[1])!='None') :
+                enemyDistance2= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(redIndex[1]))
+                if(gameState.getAgentPosition(redIndex[1])[0]>= 15 and enemyDistance2<= 6): #적과의 거리
+                    if(state.data.redIndex[1].scaredTimer <= 0 ):
+                        enemyDistance-= (7-enemyDistance2)** self.weight["EnemyBaseOppAgentDist"]
+                    else:
+                        enemyDistance=enemyDistance2*["ScaredOppAgentDist"]
+                if(gameState.getAgentPosition(redIndex[1])[0]<= 14 and enemyDistance1<= 6):
+                    if(state.data.agentStates[self.index].scaredTimer <= 0 ):
+                        enemyDistance+= (7-enemyDistance2)* self.weight["OurBaseOppAgentDist"]
+                    else:
+                        enemyDistance-= (7-enemyDistance2)** self.weight["ScaredAgentDist"]
+            '''if(gameState.getScore()< 0) :
+               distanceFromDefend-=(self.weight["DefensePointDist"]* self.getMazeDistance(gameState.getAgentPosition(self.index), (19,5) ))**2'''
 
 
-        terminal[0] = terminal[0]*self.weight["PalletNum"] + foodNearest*self.weight["NearestPallet"] + distanceFromDefend + self.weight["EnemyBaseOppAgentDist"]*enemyDistance
+        terminal[0] = terminal[0]*self.weight["PalletNum"] + foodNearest*self.weight["NearestPallet"] + distanceFromDefend + enemyDistance
         return terminal
     
     def value(self, gameState, depth, foodLeft, alpha, beta) :
@@ -353,7 +391,7 @@ class SecondAgent(myAgent) :
 
     count = 0
     distanceFromDefend = 0
-
+    
     def probability(self, gameState, action) :
         return 1/len(gameState.getLegalActions(self.index))
 
@@ -363,28 +401,79 @@ class SecondAgent(myAgent) :
 
         terminal = [foodLeft-len(foodLeft1), 'Stop']
         foodNearest = float("inf")
-
-        if(self.isRed): #점수가 앞설 때 방어지점과의 거리 계산 및 연산 
-            if(gameState.getScore()> 0) :
-                distanceFromDefend-=(self.weight["DefensePointDist"]*self.getMazeDistance(gameState.getAgentPosition(self.index), (12,4) ))**2
-            if(gameState.getAgentPosition(2) is not 'None') :
-                enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(2))
-            if(gameState.getAgentPosition(3) is not 'None') :
-                enemyDistance2= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(3))
-            enemyDistance=((12- enemyDistance1)** 2)+((12- enemyDistance2)** 2)
-            enemyDistance/=2
-        else :
-            if(gameState.getScore()< 0) :
-                distanceFromDefend=(self.weight["DefensePointDist"]*self.getMazeDistance(gameState.getAgentPosition(self.index), (19,11) ))**2
-            if(gameState.getAgentPosition(0) is not 'None') :
-                enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(0))
-            if(gameState.getAgentPosition(1) is not 'None') :
-                enemyDistance2= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(1))
-            enemyDistance=((12-enemyDistance1)**2)+((12-enemyDistance2)**2)
-            enemyDistance/=2
-
+        redIndex=gameState.getRedTeamIndices()
+        blueIndex=gameState.getBlueTeamIndices()
+ 
+        for a in foodLeft1 : #Pellet 섭취 여부와 가장 가까운 Pellet의 거리 계산
+            dist = self.getMazeDistance(a, gameState.getAgentPosition(self.index))
+            if(dist<foodNearest):
+                foodNearest = dist
+        if(len(foodLeft1) == 0) :
+            foodNearest = 0
         
-        terminal[0] = terminal[0]*self.weight["PalletNum"] + foodNearest*self.weight["NearestPallet"] + distanceFromDefend + self.weight["EnemyBaseOppAgentDist"]*enemyDistance
+
+        if(self.isRed): # RED 일때
+            enemyDistance= 0
+            if(gameState.getAgentPosition(blueIndex[0])!='None') :
+                enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(blueIndex[0]))
+                if(gameState.getAgentPosition(blueIndex[0])[0]>= 15 and enemyDistance1<= 6): #적과의 거리
+                    if(state.data.agentStates[blueIndex[0]].scaredTimer <= 0 ):
+                        enemyDistance-= (7-enemyDistance1)** self.weight["EnemyBaseOppAgentDist"]
+                    else:
+                        enemyDistance=enemyDistance1*["ScaredOppAgentDist"]
+                if(gameState.getAgentPosition(blueIndex[0])[0]<= 14 and enemyDistance1<= 6):
+                    if(state.data.agentStates[self.index].scaredTimer <= 0 ):
+                        enemyDistance+= (7-enemyDistance1)* self.weight["OurBaseOppAgentDist"]
+                    else:
+                        enemyDistance-= (7-enemyDistance1)** self.weight["ScaredAgentDist"]
+
+            if(gameState.getAgentPosition(blueIndex[1])!='None') :
+                enemyDistance2= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(blueIndex[1]))
+                if(gameState.getAgentPosition(blueIndex[1])[0]>= 15 and enemyDistance2<= 6): #적과의 거리
+                    if(state.data.blueIndex[1].scaredTimer <= 0 ):
+                        enemyDistance-= (7-enemyDistance2)** self.weight["EnemyBaseOppAgentDist"]
+                    else:
+                        enemyDistance=enemyDistance2*["ScaredOppAgentDist"]
+                if(gameState.getAgentPosition(blueIndex[1])[0]<= 14 and enemyDistance1<= 6):
+                    if(state.data.agentStates[self.index].scaredTimer <= 0 ):
+                        enemyDistance+= (7-enemyDistance2)* self.weight["OurBaseOppAgentDist"]
+                    else:
+                        enemyDistance-= (7-enemyDistance2)** self.weight["ScaredAgentDist"]
+                        
+            '''if(gameState.getScore()> 0) :
+                distanceFromDefend-=(self.getMazeDistance(gameState.getAgentPosition(self.index), (12,4) ))**2'''
+        else: # BLUE 일때
+            enemyDistance= 0
+            if(gameState.getAgentPosition(redIndex[0])!='None') :
+                enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(redIndex[0]))
+                if(gameState.getAgentPosition(redIndex[0])[0]>= 15 and enemyDistance1<= 6): #적과의 거리
+                    if(state.data.agentStates[redIndex[0]].scaredTimer <= 0 ):
+                        enemyDistance-= (7-enemyDistance1)** self.weight["EnemyBaseOppAgentDist"]
+                    else:
+                        enemyDistance=enemyDistance1*["ScaredOppAgentDist"]
+                if(gameState.getAgentPosition(redIndex[0])[0]<= 14 and enemyDistance1<= 6):
+                    if(state.data.agentStates[self.index].scaredTimer <= 0 ):
+                        enemyDistance+= (7-enemyDistance1)* self.weight["OurBaseOppAgentDist"]
+                    else:
+                        enemyDistance-= (7-enemyDistance1)** self.weight["ScaredAgentDist"]
+
+            if(gameState.getAgentPosition(redIndex[1])!='None') :
+                enemyDistance2= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(redIndex[1]))
+                if(gameState.getAgentPosition(redIndex[1])[0]>= 15 and enemyDistance2<= 6): #적과의 거리
+                    if(state.data.redIndex[1].scaredTimer <= 0 ):
+                        enemyDistance-= (7-enemyDistance2)** self.weight["EnemyBaseOppAgentDist"]
+                    else:
+                        enemyDistance=enemyDistance2*["ScaredOppAgentDist"]
+                if(gameState.getAgentPosition(redIndex[1])[0]<= 14 and enemyDistance1<= 6):
+                    if(state.data.agentStates[self.index].scaredTimer <= 0 ):
+                        enemyDistance+= (7-enemyDistance2)* self.weight["OurBaseOppAgentDist"]
+                    else:
+                        enemyDistance-= (7-enemyDistance2)** self.weight["ScaredAgentDist"]
+            '''if(gameState.getScore()< 0) :
+               distanceFromDefend-=(self.weight["DefensePointDist"]* self.getMazeDistance(gameState.getAgentPosition(self.index), (19,11) ))**2'''
+
+
+        terminal[0] = terminal[0]*self.weight["PalletNum"] + foodNearest*self.weight["NearestPallet"] + distanceFromDefend + enemyDistance
         return terminal
 
     def value(self, gameState, depth, foodLeft, alpha, beta) :

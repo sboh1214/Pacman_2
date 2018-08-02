@@ -68,7 +68,8 @@ def manhattanDistance(x, y ):
   return abs( x[0] - y[0] ) + abs( x[1] - y[1] )
 
 def isInt(pos):
-  return pos[0] == int(pos[0]) and pos[1] == int(pos[1])
+  x, y = pos
+  return x == int(x) and y == int(y)
 
 def getGrids2D(pos):
   grids = []
