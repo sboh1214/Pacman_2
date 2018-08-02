@@ -254,7 +254,7 @@ class FirstAgent(myAgent) :
 
         return saves
 
-    def HowToAction(self, gameState):
+    def HowToAction(self, gameState): #30X14
         LeftTime = gameState.data.TimeLeft
         Score = gameState.getScore()
         RB = gameState.isRed()
@@ -262,17 +262,27 @@ class FirstAgent(myAgent) :
             IsWin = True
         else:
             IsWin = False
-        RedFirst = gameState.getLegalActions(0)
-        RedSecond = gameState.getLegalActions(1)
-        BlueFirst = gameState.getLegalActions(2)
-        BlueSecond = gameState.getLegalActions(3)
-
-        
+        if (RB==True): #When our team is red
+            FAPos = gameState.getAgentPosition(0) #Red First Agent Position
+            SAPOs = gameState.getAgentPosition(1) #Red Second Agent Position
+            if (FAPos[0]==0 and FAPos[1]<13 and SAPOs[0]==0 and SAPOs[1]<13):
+                InitialTime = True
+            else:
+                InitialTime = False
+        else: #when our team is blue
+            FAPos = gameState.getAgentPosition(2) #Blue First Agent Position
+            SAPos = gameState.getAgentPosition(3) #Blue Second Agent Position
+            if (FAPos[0]==29 and FAPos[1]>0 and SAPOs[0]==29 and SAPOs[1]>0):
+                InitialTime = True
+            else:
+                InitialTime = False
 
         if (LeftTime <= 120 and IsWin==False):
             return "TimeAttack"
         elif (LeftTime <= 120 and IsWin==True):
             return "TimeDefense"
+        elif (InitialTime == True):
+            return "InitialTime"
         else:
             return "AI"        
 
@@ -296,6 +306,14 @@ class FirstAgent(myAgent) :
         BlueFirst = gameState.getLegalActions(2)
         BlueSecond = gameState.getLegalActions(3)
 
+    def chooseInitial(self, gameState):
+        if (gameState.isRed == True):
+            Team = "Red"
+            return Directions.NORTH
+        else:
+            Team = "Blue"
+            return Directions.SOUTH
+
 
     def chooseMove(self, gameState):
 
@@ -314,6 +332,9 @@ class FirstAgent(myAgent) :
             choice = self.chooseTimeAttack(gameState) #시간이 얼마 남지 않았는데 지고 있을때
         elif (selection == "TimeDefense"):
             choice = self.chooseTimeDefense(gameState) #시간이 얼마 남지 않았는데 이기고 있을때
+        elif (selection == "InitialTime"):
+            choice = self.chooseInitial(gameState) #처음 시작할때
+        
         else:
             choice = self.value(gameState, 0, foodLeft,float("-inf"),float("inf"))
 
