@@ -353,6 +353,8 @@ class FirstAgent(myAgent) :
                     return Directions.SOUTH
                 elif (item is "NORTH"):
                     return Directions.NORTH
+                else:
+                    return Directions.STOP
             return Directions.STOP
         else:
             BlueFirst = gameState.getLegalActions(blueIndex[0])
@@ -365,6 +367,8 @@ class FirstAgent(myAgent) :
                     return Directions.SOUTH
                 elif (item is "NORTH"):
                     return Directions.NORTH
+                else:
+                    return Directions.STOP
             return Directions.STOP
 
     def chooseMove(self, gameState): #오승빈
