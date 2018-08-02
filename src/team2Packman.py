@@ -37,18 +37,18 @@ def createTeam(firstIndex, secondIndex, isRed,
 
 class myAgent(CaptureAgent) :
 
-    weight={"PalletNum":50, \
-    "NearestPallet":-5, \
-    "EnemyBaseOppAgentDist":1, \
+    weight={"PalletNum":30, \
+    "NearestPallet":-1, \
+    "EnemyBaseOppAgentDist":2, \
     "ScaredOppAgentDist":0, \
     "OurBaseDist":-3, \
     "OurBaseDistInMax5":-10, \
     "OurBaseDistUnder2":-15, \
     "EatenPallet":1, \
     "OppAgentKill":20, \
-    "OurBaseOppAgentDist":2, \
+    "OurBaseOppAgentDist":3, \
     "ScaredAgentDist":-20, \
-    "DefensePointDist":2}
+    "DefensePointDist":3}
     GameTime = 0
 
     """
@@ -134,7 +134,7 @@ class FirstAgent(myAgent) :
                         else:
                             enemyDistance-= (7-enemyDistance1)** self.weight["EnemyBaseOppAgentDist"]
                     if(gameState.getAgentPosition(blueIndex[0])[0]<= 14 and enemyDistance1<= 6):
-                        if(gameState.data.agentStates[self.index].scaredTimer <= 0 ):
+                        if(gameState.data.agentStates[self.index].scaredTimer > 0 ):
                             enemyDistance+= (7-enemyDistance1)* self.weight["OurBaseOppAgentDist"]
                         else:
                             enemyDistance-= (7-enemyDistance1)** self.weight["ScaredAgentDist"]
@@ -197,7 +197,7 @@ class FirstAgent(myAgent) :
             return 10
     
     def value(self, gameState, depth, foodLeft, alpha, beta) :
-        if depth >= 3 :
+        if depth >= 1 :
 
             return self.terminalEvaluation(gameState, foodLeft)
         elif depth%2 == 0 :
@@ -488,13 +488,13 @@ class SecondAgent(myAgent) :
                     distanceFromDefend-=(self.weight["DefensePointDist"]* self.getMazeDistance(gameState.getAgentPosition(self.index), (19,11) ))**2
         
     
-            terminal[0] = terminal[0]*self.weight["PalletNum"] + foodNearest*self.weight["NearestPallet"] + distanceFromDefend + enemyDistance
+            terminal[0] = terminal[0]*self.weight["PalletNum"] + foodNearest*self.weight["NearestPallet"]*0.7 + distanceFromDefend + enemyDistance*1.5
             return terminal
         except:
             return 10
 
     def value(self, gameState, depth, foodLeft, alpha, beta) :
-        if depth >= 3 :
+        if depth >= 1 :
             return self.terminalEvaluation(gameState, foodLeft)
         elif depth%2 == 0 :
             return self.maxValue(gameState, depth, alpha, beta)
