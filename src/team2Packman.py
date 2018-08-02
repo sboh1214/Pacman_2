@@ -197,7 +197,7 @@ class FirstAgent(myAgent) :
             return 10
     
     def value(self, gameState, depth, foodLeft, alpha, beta) :
-        if depth >= 1 :
+        if depth >= 3 :
 
             return self.terminalEvaluation(gameState, foodLeft)
         elif depth%2 == 0 :
@@ -490,7 +490,7 @@ class SecondAgent(myAgent) :
             return 10
 
     def value(self, gameState, depth, foodLeft, alpha, beta) :
-        if depth >= 1 :
+        if depth >= 3 :
             return self.terminalEvaluation(gameState, foodLeft)
         elif depth%2 == 0 :
             return self.maxValue(gameState, depth, alpha, beta)
