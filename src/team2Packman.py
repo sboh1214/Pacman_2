@@ -8,6 +8,7 @@ from util import nearestPoint
 from capture import GameState
 from game import AgentState
 from capture import AgentRules
+from game import Configuration
 
 #################
 # Team creation #
@@ -47,8 +48,6 @@ class myAgent(CaptureAgent) :
     "ScaredAgentDist":-20, \
     "DefensePointDist":2}
     GameTime = 0
-
-    agentState = AgentState(True)
 
     """
     A Dummy agent to serve as an example of the necessary agent structure.
@@ -117,14 +116,17 @@ class FirstAgent(myAgent) :
                 foodNearest = dist
         if(len(foodLeft1) == 0) :
             foodNearest = 0
-        
+
+        configuration = Configuration(gameState.getAgentPosition(self.index),Directions.STOP) #좌표,Action
+        agentState = AgentState(configuration,True)
+        State = agentState.copy()
 
         if(self.isRed):
             enemyDistance= 0
             if(gameState.getAgentPosition(2) is not 'None') :
                 enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(2))
                 if(gameState.getAgentPosition(2)[0]>= 15 and enemyDistance1<= 6): #적과의 거리
-                    if(state.data.agentStates[2].scaredTimer <= 0 ):
+                    if(State.data.agentStates[2].scaredTimer <= 0 ):
                         enemyDistance-= (7-enemyDistance1)** self.weight["EnemyBaseOppAgentDist"]
                     else:
                         enemyDistance=enemyDistance1*["ScaredOppAgentDist"]
