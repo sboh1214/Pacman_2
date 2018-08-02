@@ -5,6 +5,7 @@
 .vscode/
 .idea/
 src/__pycache/
+*.pyc
 
 # User-specific files
 *.suo
