@@ -188,16 +188,6 @@ class FirstAgent(myAgent) :
 
         return saves
 
-    def expValue(self, gameState, depth) :
-        val = 0
-        actions = gameState.getLegalActions(self.index)
-
-        for action in actions:
-            p = self.probability(gameState, action)
-            val += p*self.value(self.getSuccessor(gameState, action), depth+1, len(self.getFood(gameState).asList()),alpha,beta)[0]
-
-        return val
-
     def minValue(self, gameState, depth, alpha, beta):
         saves = [float("inf"), 'Stop']
 
@@ -216,7 +206,7 @@ class FirstAgent(myAgent) :
                 if (saves[0] < alpha ):
                     return saves
 
-                beta = min(alpha, saves[0])
+                beta = min(beta, saves[0])
 
         return saves
 
@@ -423,16 +413,6 @@ class SecondAgent(myAgent) :
 
         return saves
 
-    def expValue(self, gameState, depth) :
-        val = 0
-        actions = gameState.getLegalActions(self.index)
-
-        for action in actions:
-            p = self.probability(gameState, action)
-            val += p*self.value(self.getSuccessor(gameState, action), depth+1, len(self.getFood(gameState).asList()),alpha,beta)[0]
-
-        return val
-
     def minValue(self, gameState, depth, alpha, beta):
         saves = [float("inf"), 'Stop']
 
@@ -451,7 +431,7 @@ class SecondAgent(myAgent) :
                 if (saves[0] < alpha ):
                     return saves
 
-                beta = min(alpha, saves[0])
+                beta = min(beta, saves[0])
 
         return saves
 
@@ -485,8 +465,67 @@ class SecondAgent(myAgent) :
 
         return saves
 
-    def chooseMove(self, gameState):
+    def HowToAction(self, gameState): #30X14 오승빈
+        self.GameTime += 1
+        LeftTime = 300 - self.GameTime
+        
+        Score = gameState.getScore()
+        RB = self.isRed
+        if (Score > 0 and RB == True):
+            IsWin = True
+        else:
+            IsWin = False
+        if (RB==True): #When our team is red
+            FAPos = gameState.getAgentPosition(0) #Red First Agent Position
+            SAPOs = gameState.getAgentPosition(1) #Red Second Agent Position
+            if (FAPos[0]==0 and FAPos[1]<13 and SAPOs[0]==0 and SAPOs[1]<13):
+                InitialTime = True
+            else:
+                InitialTime = False
+        else: #when our team is blue
+            FAPos = gameState.getAgentPosition(2) #Blue First Agent Position
+            SAPos = gameState.getAgentPosition(3) #Blue Second Agent Position
+            if (FAPos[0]==29 and FAPos[1]>0 and SAPos[0]==29 and SAPos[1]>0):
+                InitialTime = True
+            else:
+                InitialTime = False
 
+        if (LeftTime <= 30 and IsWin==False):
+            return "TimeAttack"
+        elif (LeftTime <= 30 and IsWin==True):
+            return "TimeDefense"
+        elif (InitialTime == True):
+            return "InitialTime"
+        else:
+            return "AI"        
+
+    def chooseTimeAttack(self,gameState): #오승빈
+        if (gameState.isRed==True):
+            Team = "Red"
+            RedFirst = gameState.getLegalActions(0)
+            RedSecond = gameState.getLegalActions(1)
+        else:
+            Team = "Blue"
+            BlueFirst = gameState.getLegalActions(2)
+            BlueSecond = gameState.getLegalActions(3)
+
+    def chooseTimeDefense(self, gameState): #오승빈
+        if (gameState.isRed==True):
+            Team = "Red"
+        else:
+            Team = "Blue"
+        RedFirst = gameState.getLegalActions(0)
+        RedSecond = gameState.getLegalActions(1)
+        BlueFirst = gameState.getLegalActions(2)
+        BlueSecond = gameState.getLegalActions(3)
+
+    def chooseInitial(self, gameState): #오승빈
+        if (gameState.isRed == True):
+            return Directions.NORTH
+        else:
+            return Directions.SOUTH
+
+    def chooseMove(self, gameState): #오승빈
         if(abs(gameState.getAgentPosition(self.index)[0]-self.start[0])<=14) :
             FirstAgent.count=0
 
@@ -494,8 +533,19 @@ class SecondAgent(myAgent) :
             return self.goHome(gameState)
 
         foodLeft = len(self.getFood(gameState).asList())
-        choice = self.value(gameState, 0, foodLeft,float("-inf"),float("inf"))
 
+        selection = self.HowToAction(gameState) #AI가 필요한지 노가다가 필요한지 결정
+        if (selection == "AI"):
+            choice = self.value(gameState, 0, foodLeft,float("-inf"),float("inf")) #AI사용
+        #elif (selection == "TimeAttack"):
+        #    choice = self.chooseTimeAttack(gameState) #시간이 얼마 남지 않았는데 지고 있을때
+        #elif (selection == "TimeDefense"):
+        #    choice = self.chooseTimeDefense(gameState) #시간이 얼마 남지 않았는데 이기고 있을때
+        elif (selection == "InitialTime"):
+            choice = self.chooseInitial(gameState) #처음 시작할때
+        
+        else:
+            choice = self.value(gameState, 0, foodLeft,float("-inf"),float("inf"))
 
         successor = self.getSuccessor(gameState, choice[1])
 
@@ -514,5 +564,7 @@ class SecondAgent(myAgent) :
         '''
         You should change this in your own agent.
         '''
+
         move = self.chooseMove(gameState)[1]
+
         return move
