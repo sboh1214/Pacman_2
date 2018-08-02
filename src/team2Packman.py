@@ -10,6 +10,7 @@ from game import AgentState
 from capture import AgentRules
 from game import Agent
 from game import GameStateData
+from game import Configuration
 
 #################
 # Team creation #
@@ -117,7 +118,10 @@ class FirstAgent(myAgent) :
                 foodNearest = dist
         if(len(foodLeft1) == 0) :
             foodNearest = 0
-        
+
+        configuration = Configuration(gameState.getAgentPosition(self.index),Directions.STOP) #좌표,Action
+        agentState = AgentState(configuration,True)
+        State = agentState.copy()
 
         if(self.isRed): # RED 일때
             enemyDistance= 0
