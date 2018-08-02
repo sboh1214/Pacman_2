@@ -289,10 +289,11 @@ class FirstAgent(myAgent) :
     def chooseTimeAttack(self,gameState):
         if (gameState.isRed==True):
             Team = "Red"
+            RedFirst = gameState.getLegalActions(0)
+            RedSecond = gameState.getLegalActions(1)
         else:
             Team = "Blue"
-        RedFirst = gameState.getLegalActions(0)
-        RedSecond = gameState.getLegalActions(1)
+
         BlueFirst = gameState.getLegalActions(2)
         BlueSecond = gameState.getLegalActions(3)
 
@@ -328,12 +329,12 @@ class FirstAgent(myAgent) :
         selection = self.HowToAction(gameState) #AI가 필요한지 노가다가 필요한지 결정
         if (selection == "AI"):
             choice = self.value(gameState, 0, foodLeft,float("-inf"),float("inf")) #AI사용
-        elif (selection == "TimeAttack"):
-            choice = self.chooseTimeAttack(gameState) #시간이 얼마 남지 않았는데 지고 있을때
-        elif (selection == "TimeDefense"):
-            choice = self.chooseTimeDefense(gameState) #시간이 얼마 남지 않았는데 이기고 있을때
-        elif (selection == "InitialTime"):
-            choice = self.chooseInitial(gameState) #처음 시작할때
+        #elif (selection == "TimeAttack"):
+        #    choice = self.chooseTimeAttack(gameState) #시간이 얼마 남지 않았는데 지고 있을때
+        #elif (selection == "TimeDefense"):
+        #    choice = self.chooseTimeDefense(gameState) #시간이 얼마 남지 않았는데 이기고 있을때
+        #elif (selection == "InitialTime"):
+        #    choice = self.chooseInitial(gameState) #처음 시작할때
         
         else:
             choice = self.value(gameState, 0, foodLeft,float("-inf"),float("inf"))

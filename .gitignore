@@ -4,6 +4,7 @@
 #Custom
 .vscode/
 .idea/
+src/__pycache/
 
 # User-specific files
 *.suo
