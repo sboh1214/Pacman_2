@@ -254,7 +254,7 @@ class FirstAgent(myAgent) :
 
         return saves
 
-    def HowToAction(self, gameState): #30X14
+    def HowToAction(self, gameState): #30X14 오승빈
         LeftTime = gameState.data.TimeLeft
         Score = gameState.getScore()
         RB = gameState.isRed()
@@ -286,7 +286,7 @@ class FirstAgent(myAgent) :
         else:
             return "AI"        
 
-    def chooseTimeAttack(self,gameState):
+    def chooseTimeAttack(self,gameState): #오승빈
         if (gameState.isRed==True):
             Team = "Red"
             RedFirst = gameState.getLegalActions(0)
@@ -297,7 +297,7 @@ class FirstAgent(myAgent) :
         BlueFirst = gameState.getLegalActions(2)
         BlueSecond = gameState.getLegalActions(3)
 
-    def chooseTimeDefense(self, gameState):
+    def chooseTimeDefense(self, gameState): #오승빈
         if (gameState.isRed==True):
             Team = "Red"
         else:
@@ -307,7 +307,7 @@ class FirstAgent(myAgent) :
         BlueFirst = gameState.getLegalActions(2)
         BlueSecond = gameState.getLegalActions(3)
 
-    def chooseInitial(self, gameState):
+    def chooseInitial(self, gameState): #오승빈
         if (gameState.isRed == True):
             Team = "Red"
             return Directions.NORTH
@@ -316,7 +316,7 @@ class FirstAgent(myAgent) :
             return Directions.SOUTH
 
 
-    def chooseMove(self, gameState):
+    def chooseMove(self, gameState): #오승빈
 
         if(abs(gameState.getAgentPosition(self.index)[0]-self.start[0])<=14) :
             FirstAgent.count=0
