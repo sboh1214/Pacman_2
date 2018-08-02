@@ -129,12 +129,12 @@ class FirstAgent(myAgent) :
             if(gameState.getAgentPosition(blueIndex[0])!=None) :
                 enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(blueIndex[0]))
                 if(gameState.getAgentPosition(blueIndex[0])[0]>= 15 and enemyDistance1<= 6): #적과의 거리
-                    if(state.data.agentStates[blueIndex[0]].scaredTimer <= 0 ):
+                    if(gameState.data.agentStates[blueIndex[0]].scaredTimer <= 0 ):
                         enemyDistance-= (7-enemyDistance1)** self.weight["EnemyBaseOppAgentDist"]
                     else:
                         enemyDistance=enemyDistance1*["ScaredOppAgentDist"]
                 if(gameState.getAgentPosition(blueIndex[0])[0]<= 14 and enemyDistance1<= 6):
-                    if(state.data.agentStates[self.index].scaredTimer <= 0 ):
+                    if(gameState.data.agentStates[self.index].scaredTimer <= 0 ):
                         enemyDistance+= (7-enemyDistance1)* self.weight["OurBaseOppAgentDist"]
                     else:
                         enemyDistance-= (7-enemyDistance1)** self.weight["ScaredAgentDist"]
@@ -142,12 +142,12 @@ class FirstAgent(myAgent) :
             if(gameState.getAgentPosition(blueIndex[1])!=None) :
                 enemyDistance2= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(blueIndex[1]))
                 if(gameState.getAgentPosition(blueIndex[1])[0]>= 15 and enemyDistance2<= 6): #적과의 거리
-                    if(state.data.blueIndex[1].scaredTimer <= 0 ):
+                    if(gameState.data.blueIndex[1].scaredTimer <= 0 ):
                         enemyDistance-= (7-enemyDistance2)** self.weight["EnemyBaseOppAgentDist"]
                     else:
                         enemyDistance=enemyDistance2*["ScaredOppAgentDist"]
                 if(gameState.getAgentPosition(blueIndex[1])[0]<= 14 and enemyDistance2<= 6):
-                    if(state.data.agentStates[self.index].scaredTimer <= 0 ):
+                    if(gameState.data.agentStates[self.index].scaredTimer <= 0 ):
                         enemyDistance+= (7-enemyDistance2)* self.weight["OurBaseOppAgentDist"]
                     else:
                         enemyDistance-= (7-enemyDistance2)** self.weight["ScaredAgentDist"]
@@ -162,12 +162,12 @@ class FirstAgent(myAgent) :
             if(gameState.getAgentPosition(redIndex[0])!=None) :
                 enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(redIndex[0]))
                 if(gameState.getAgentPosition(redIndex[0])[0]<= 14 and enemyDistance1<= 6): #적과의 거리
-                    if(state.data.agentStates[redIndex[0]].scaredTimer <= 0 ):
+                    if(gameState.data.agentStates[redIndex[0]].scaredTimer <= 0 ):
                         enemyDistance-= (7-enemyDistance1)** self.weight["EnemyBaseOppAgentDist"]
                     else:
                         enemyDistance=enemyDistance1*["ScaredOppAgentDist"]
                 if(gameState.getAgentPosition(redIndex[0])[0]>= 15 and enemyDistance1<= 6):
-                    if(state.data.agentStates[self.index].scaredTimer <= 0 ):
+                    if(gameState.data.agentStates[self.index].scaredTimer <= 0 ):
                         enemyDistance+= (7-enemyDistance1)* self.weight["OurBaseOppAgentDist"]
                     else:
                         enemyDistance-= (7-enemyDistance1)** self.weight["ScaredAgentDist"]
@@ -175,12 +175,12 @@ class FirstAgent(myAgent) :
             if(gameState.getAgentPosition(redIndex[1])!=None) :
                 enemyDistance2= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(redIndex[1]))
                 if(gameState.getAgentPosition(redIndex[1])[0]<= 14 and enemyDistance2<= 6): #적과의 거리
-                    if(state.data.redIndex[1].scaredTimer <= 0 ):
+                    if(gameState.data.redIndex[1].scaredTimer <= 0 ):
                         enemyDistance-= (7-enemyDistance2)** self.weight["EnemyBaseOppAgentDist"]
                     else:
                         enemyDistance=enemyDistance2*["ScaredOppAgentDist"]
                 if(gameState.getAgentPosition(redIndex[1])[0]>= 15 and enemyDistance2<= 6):
-                    if(state.data.agentStates[self.index].scaredTimer <= 0 ):
+                    if(gameState.data.agentStates[self.index].scaredTimer <= 0 ):
                         enemyDistance+= (7-enemyDistance2)* self.weight["OurBaseOppAgentDist"]
                     else:
                         enemyDistance-= (7-enemyDistance2)** self.weight["ScaredAgentDist"]
@@ -408,12 +408,12 @@ class SecondAgent(myAgent) :
             if(gameState.getAgentPosition(blueIndex[0])!=None) :
                 enemyDistance1= self.getMazeDistance( gameState.getAgentPosition(self.index),gameState.getAgentPosition(blueIndex[0]) )
                 if(gameState.getAgentPosition(blueIndex[0])[0]>= 15 and enemyDistance1<= 6): #적과의 거리
-                    if(state.data.agentStates[blueIndex[0]].scaredTimer <= 0 ):
+                    if(gameState.data.agentStates[blueIndex[0]].scaredTimer <= 0 ):
                         enemyDistance-= (7-enemyDistance1)** self.weight["EnemyBaseOppAgentDist"]
                     else:
                         enemyDistance=enemyDistance1*["ScaredOppAgentDist"]
                 if(gameState.getAgentPosition(blueIndex[0])[0]<= 14 and enemyDistance1<= 6):
-                    if(state.data.agentStates[self.index].scaredTimer <= 0 ):
+                    if(gameState.data.agentStates[self.index].scaredTimer <= 0 ):
                         enemyDistance+= (7-enemyDistance1)* self.weight["OurBaseOppAgentDist"]
                     else:
                         enemyDistance-= (7-enemyDistance1)** self.weight["ScaredAgentDist"]
@@ -421,12 +421,12 @@ class SecondAgent(myAgent) :
             if(gameState.getAgentPosition(blueIndex[1])!=None) :
                 enemyDistance2= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(blueIndex[1]))
                 if(gameState.getAgentPosition(blueIndex[1])[0]>= 15 and enemyDistance2<= 6): #적과의 거리
-                    if(state.data.blueIndex[1].scaredTimer <= 0 ):
+                    if(gameState.data.blueIndex[1].scaredTimer <= 0 ):
                         enemyDistance-= (7-enemyDistance2)** self.weight["EnemyBaseOppAgentDist"]
                     else:
                         enemyDistance=enemyDistance2*["ScaredOppAgentDist"]
                 if(gameState.getAgentPosition(blueIndex[1])[0]<= 14 and enemyDistance2<= 6):
-                    if(state.data.agentStates[self.index].scaredTimer <= 0 ):
+                    if(gameState.data.agentStates[self.index].scaredTimer <= 0 ):
                         enemyDistance+= (7-enemyDistance2)* self.weight["OurBaseOppAgentDist"]
                     else:
                         enemyDistance-= (7-enemyDistance2)** self.weight["ScaredAgentDist"]
@@ -439,12 +439,12 @@ class SecondAgent(myAgent) :
             if(gameState.getAgentPosition(redIndex[0])!=None) :
                 enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(redIndex[0]))
                 if(gameState.getAgentPosition(redIndex[0])[0]<= 14 and enemyDistance1<= 6): #적과의 거리
-                    if(state.data.agentStates[redIndex[0]].scaredTimer <= 0 ):
+                    if(gameState.data.agentStates[redIndex[0]].scaredTimer <= 0 ):
                         enemyDistance-= (7-enemyDistance1)** self.weight["EnemyBaseOppAgentDist"]
                     else:
                         enemyDistance=enemyDistance1*["ScaredOppAgentDist"]
                 if(gameState.getAgentPosition(redIndex[0])[0]>= 15 and enemyDistance1<= 6):
-                    if(state.data.agentStates[self.index].scaredTimer <= 0 ):
+                    if(gameState.data.agentStates[self.index].scaredTimer <= 0 ):
                         enemyDistance+= (7-enemyDistance1)* self.weight["OurBaseOppAgentDist"]
                     else:
                         enemyDistance-= (7-enemyDistance1)** self.weight["ScaredAgentDist"]
@@ -452,12 +452,12 @@ class SecondAgent(myAgent) :
             if(gameState.getAgentPosition(redIndex[1])!=None) :
                 enemyDistance2= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(redIndex[1]))
                 if(gameState.getAgentPosition(redIndex[1])[0]<= 14 and enemyDistance2<= 6): #적과의 거리
-                    if(state.data.redIndex[1].scaredTimer <= 0 ):
+                    if(gameState.data.redIndex[1].scaredTimer <= 0 ):
                         enemyDistance-= (7-enemyDistance2)** self.weight["EnemyBaseOppAgentDist"]
                     else:
                         enemyDistance=enemyDistance2*["ScaredOppAgentDist"]
                 if(gameState.getAgentPosition(redIndex[1])[0]>= 15 and enemyDistance2<= 6):
-                    if(state.data.agentStates[self.index].scaredTimer <= 0 ):
+                    if(gameState.data.agentStates[self.index].scaredTimer <= 0 ):
                         enemyDistance+= (7-enemyDistance2)* self.weight["OurBaseOppAgentDist"]
                     else:
                         enemyDistance-= (7-enemyDistance2)** self.weight["ScaredAgentDist"]
