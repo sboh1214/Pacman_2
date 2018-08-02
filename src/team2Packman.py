@@ -50,7 +50,6 @@ class myAgent(CaptureAgent) :
     "ScaredAgentDist":-20, \
     "DefensePointDist":2}
     GameTime = 0
-    History=[]
     """
     A Dummy agent to serve as an example of the necessary agent structure.
     You should look at baselineTeam.py for more details about how to
@@ -99,7 +98,8 @@ class myAgent(CaptureAgent) :
 class FirstAgent(myAgent) :
 
     count = 0
-    
+    FirstHistory = []
+
     def probability(self, gameState, action) :
         return 1/len(gameState.getLegalActions(self.index))
 
@@ -305,8 +305,8 @@ class FirstAgent(myAgent) :
             return "TimeDefense"
         elif (InitialTime == True):
             return "InitialTime"
-        elif (len(self.History) > 1):
-            if (self.History[-1]==self.History[-2]):
+        elif (len(self.FirstHistory) > 1):
+            if (self.FirstHistory[-1]==self.FirstHistory[-2]):
                 return "Thrashing"
         else:
             return "AI"        
@@ -376,7 +376,9 @@ class FirstAgent(myAgent) :
         if (foodLeft - len(self.getFood(successor).asList())) is 1 :
             FirstAgent.count += 1
 
-        self.History.append(choice)
+        self.FirstHistory.append(choice)
+        print("First : "+str(choice))
+
         return choice
 
     def chooseAction(self, gameState):
@@ -396,7 +398,8 @@ class FirstAgent(myAgent) :
 class SecondAgent(myAgent) :
 
     count = 0
-    
+    SecondHistory = []
+
     def probability(self, gameState, action) :
         return 1/len(gameState.getLegalActions(self.index))
 
@@ -599,8 +602,8 @@ class SecondAgent(myAgent) :
             return "TimeDefense"
         elif (InitialTime == True):
             return "InitialTime"
-        elif (len(self.History) > 1):
-            if (self.History[-1]==self.History[-2]):
+        elif (len(self.SecondHistory) > 1):
+            if (self.SecondHistory[-1]==self.SecondHistory[-2]):
                 return "Thrashing"
         else:
             return "AI"        
@@ -669,6 +672,9 @@ class SecondAgent(myAgent) :
 
         if (foodLeft - len(self.getFood(successor).asList())) is 1 :
             FirstAgent.count += 1
+        
+        self.SecondHistory.append(choice)
+        print("Second : "+str(choice))
 
         return choice
 
