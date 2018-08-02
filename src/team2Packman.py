@@ -45,6 +45,7 @@ class myAgent(CaptureAgent) :
     "OurBaseOppAgentDist":2, \
     "ScaredAgentDist":-20, \
     "DefensePointDist":2}
+    GameTime = 0
 
     """
     A Dummy agent to serve as an example of the necessary agent structure.
@@ -255,7 +256,9 @@ class FirstAgent(myAgent) :
         return saves
 
     def HowToAction(self, gameState): #30X14 오승빈
-        LeftTime = gameState.data.TimeLeft
+        self.GameTime += 1
+        LeftTime = 300 - self.GameTime
+        
         Score = gameState.getScore()
         RB = gameState.isRed()
         if (Score > 0 and RB == True):
@@ -272,14 +275,14 @@ class FirstAgent(myAgent) :
         else: #when our team is blue
             FAPos = gameState.getAgentPosition(2) #Blue First Agent Position
             SAPos = gameState.getAgentPosition(3) #Blue Second Agent Position
-            if (FAPos[0]==29 and FAPos[1]>0 and SAPOs[0]==29 and SAPOs[1]>0):
+            if (FAPos[0]==29 and FAPos[1]>0 and SAPos[0]==29 and SAPos[1]>0):
                 InitialTime = True
             else:
                 InitialTime = False
 
-        if (LeftTime <= 120 and IsWin==False):
+        if (LeftTime <= 30 and IsWin==False):
             return "TimeAttack"
-        elif (LeftTime <= 120 and IsWin==True):
+        elif (LeftTime <= 30 and IsWin==True):
             return "TimeDefense"
         elif (InitialTime == True):
             return "InitialTime"
@@ -293,9 +296,8 @@ class FirstAgent(myAgent) :
             RedSecond = gameState.getLegalActions(1)
         else:
             Team = "Blue"
-
-        BlueFirst = gameState.getLegalActions(2)
-        BlueSecond = gameState.getLegalActions(3)
+            BlueFirst = gameState.getLegalActions(2)
+            BlueSecond = gameState.getLegalActions(3)
 
     def chooseTimeDefense(self, gameState): #오승빈
         if (gameState.isRed==True):
@@ -315,7 +317,6 @@ class FirstAgent(myAgent) :
 
 
     def chooseMove(self, gameState): #오승빈
-
         if(abs(gameState.getAgentPosition(self.index)[0]-self.start[0])<=14) :
             FirstAgent.count=0
 
