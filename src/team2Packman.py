@@ -260,7 +260,7 @@ class FirstAgent(myAgent) :
         LeftTime = 300 - self.GameTime
         
         Score = gameState.getScore()
-        RB = gameState.isRed()
+        RB = self.isRed
         if (Score > 0 and RB == True):
             IsWin = True
         else:
