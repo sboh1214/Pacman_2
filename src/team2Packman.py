@@ -48,6 +48,8 @@ class myAgent(CaptureAgent) :
     "DefensePointDist":2}
     GameTime = 0
 
+    agentState = AgentState(True)
+
     """
     A Dummy agent to serve as an example of the necessary agent structure.
     You should look at baselineTeam.py for more details about how to
