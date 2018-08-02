@@ -322,31 +322,45 @@ class FirstAgent(myAgent) :
         redIndex=gameState.getRedTeamIndices()
         blueIndex=gameState.getBlueTeamIndices()
         if (gameState.isRed==True):
-            Team = "Red"
-            RedFirst = gameState.getLegalActions(redIndex[0])
             RedSecond = gameState.getLegalActions(redIndex[1])
+            for item in RedSecond:
+                if (item is "EAST"):
+                    return Directions.EAST
+            return Directions.STOP
         else:
-            Team = "Blue"
-            BlueFirst = gameState.getLegalActions(blueIndex[0])
             BlueSecond = gameState.getLegalActions(blueIndex[1])
+            for item in BlueSecond:
+                if (item is "WEST"):
+                    return Directions.WEST
+            return Directions.STOP
 
     def chooseTimeDefense(self, gameState): #오승빈
         redIndex=gameState.getRedTeamIndices()
         blueIndex=gameState.getBlueTeamIndices()
         if (gameState.isRed==True):
-            Team = "Red"
+            RedSecond = gameState.getLegalActions(redIndex[1])
+            for item in RedSecond:
+                if (item is "WEST"):
+                    return Directions.WEST
+            return Directions.STOP
         else:
-            Team = "Blue"
-        RedFirst = gameState.getLegalActions(redIndex[0])
-        RedSecond = gameState.getLegalActions(redIndex[1])
-        BlueFirst = gameState.getLegalActions(blueIndex[0])
-        BlueSecond = gameState.getLegalActions(blueIndex[1])
+            BlueSecond = gameState.getLegalActions(blueIndex[1])
+            for item in BlueSecond:
+                if (item is "EAST"):
+                    return Directions.EAST
+            return Directions.STOP
 
     def chooseInitial(self, gameState): #오승빈
         if (gameState.isRed == True):
             return Directions.NORTH
         else:
             return Directions.SOUTH
+
+    def chooseMustMove(self, gameState): #오승빈
+        if (gameState.isRed == True):
+            return Directions.EAST
+        else:
+            return Directions.WEST
 
     def chooseMove(self, gameState): #오승빈
         if(abs(gameState.getAgentPosition(self.index)[0]-self.start[0])<=14) :
@@ -360,13 +374,14 @@ class FirstAgent(myAgent) :
         selection = self.HowToAction(gameState) #AI가 필요한지 노가다가 필요한지 결정
         if (selection == "AI"):
             choice = self.value(gameState, 0, foodLeft,float("-inf"),float("inf")) #AI사용
-        #elif (selection == "TimeAttack"):
-        #    choice = self.chooseTimeAttack(gameState) #시간이 얼마 남지 않았는데 지고 있을때
-        #elif (selection == "TimeDefense"):
-        #    choice = self.chooseTimeDefense(gameState) #시간이 얼마 남지 않았는데 이기고 있을때
+        elif (selection == "TimeAttack"):
+            choice = self.chooseTimeAttack(gameState) #시간이 얼마 남지 않았는데 지고 있을때
+        elif (selection == "TimeDefense"):
+            choice = self.chooseTimeDefense(gameState) #시간이 얼마 남지 않았는데 이기고 있을때
         elif (selection == "InitialTime"):
             choice = self.chooseInitial(gameState) #처음 시작할때
-        
+        elif (selection == "Thrashing"):
+            choice = self.chooseMustMove(gameState)
         else:
             choice = self.value(gameState, 0, foodLeft,float("-inf"),float("inf"))
 
@@ -609,6 +624,9 @@ class SecondAgent(myAgent) :
             return "TimeDefense"
         elif (InitialTime == True):
             return "InitialTime"
+        elif (len(self.SecondHistory) > 3):
+            if (self.SecondHistory[-1]==self.SecondHistory[-3] and self.SecondHistory[-2]==self.SecondHistory[-4]):
+                return "Thrashing"
         else:
             return "AI"        
 
@@ -616,31 +634,45 @@ class SecondAgent(myAgent) :
         redIndex=gameState.getRedTeamIndices()
         blueIndex=gameState.getBlueTeamIndices()
         if (gameState.isRed==True):
-            Team = "Red"
-            RedFirst = gameState.getLegalActions(redIndex[0])
             RedSecond = gameState.getLegalActions(redIndex[1])
+            for item in RedSecond:
+                if (item is "EAST"):
+                    return Directions.EAST
+            return Directions.STOP
         else:
-            Team = "Blue"
-            BlueFirst = gameState.getLegalActions(blueIndex[0])
             BlueSecond = gameState.getLegalActions(blueIndex[1])
+            for item in BlueSecond:
+                if (item is "WEST"):
+                    return Directions.WEST
+            return Directions.STOP
 
     def chooseTimeDefense(self, gameState): #오승빈
         redIndex=gameState.getRedTeamIndices()
         blueIndex=gameState.getBlueTeamIndices()
         if (gameState.isRed==True):
-            Team = "Red"
+            RedSecond = gameState.getLegalActions(redIndex[1])
+            for item in RedSecond:
+                if (item is "WEST"):
+                    return Directions.WEST
+            return Directions.STOP
         else:
-            Team = "Blue"
-        RedFirst = gameState.getLegalActions(redIndex[0])
-        RedSecond = gameState.getLegalActions(redIndex[1])
-        BlueFirst = gameState.getLegalActions(blueIndex[0])
-        BlueSecond = gameState.getLegalActions(blueIndex[1])
+            BlueSecond = gameState.getLegalActions(blueIndex[1])
+            for item in BlueSecond:
+                if (item is "EAST"):
+                    return Directions.EAST
+            return Directions.STOP
 
     def chooseInitial(self, gameState): #오승빈
         if (gameState.isRed == True):
             return Directions.NORTH
         else:
             return Directions.SOUTH
+
+    def chooseMustMove(self, gameState): #오승빈
+        if (gameState.isRed == True):
+            return Directions.EAST
+        else:
+            return Directions.WEST
 
     def chooseMove(self, gameState): #오승빈
         if(abs(gameState.getAgentPosition(self.index)[0]-self.start[0])<=14) :
@@ -660,9 +692,8 @@ class SecondAgent(myAgent) :
            choice = self.chooseTimeDefense(gameState) #시간이 얼마 남지 않았는데 이기고 있을때
         elif (selection == "InitialTime"):
             choice = self.chooseInitial(gameState) #처음 시작할때
-        elif (len(self.SecondHistory) > 3):
-            if (self.SecondHistory[-1]==self.SecondHistory[-3] and self.SecondHistory[-2]==self.SecondHistory[-4]):
-                return "Thrashing"
+        elif (selection == "Thrashing"):
+            choice = self.chooseMustMove(gameState)
         else:
             choice = self.value(gameState, 0, foodLeft,float("-inf"),float("inf"))
 
