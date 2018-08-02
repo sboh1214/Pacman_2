@@ -35,7 +35,7 @@ class myAgent(CaptureAgent) :
 
     weight={"PalletNum":30, \
     "NearestPallet":-3, \
-    "EnemyBaseOppAgentDist":-1, \
+    "EnemyBaseOppAgentDist":3, \
     "ScaredOppAgentDist":0, \
     "OurBaseDist":-3, \
     "OurBaseDistInMax5":-10, \
@@ -80,20 +80,6 @@ class myAgent(CaptureAgent) :
         self.start = gameState.getAgentPosition(self.index)
         self.isRed = gameState.isOnRedTeam(self.index)
 
-    def chooseAction(self, gameState):
-        """
-        Picks among actions randomly.
-        """
-        actions = gameState.getLegalActions(self.index)
-
-        '''
-        You should change this in your own agent.
-        '''
-
-        move = self.chooseMove(gameState)[1]
-
-        return move
-
     def getSuccessor(self, gameState, action):
         """
         Finds the next successor which is a grid position (location tuple).
@@ -110,6 +96,7 @@ class FirstAgent(myAgent) :
 
     count = 0
     distanceFromDefend = 0
+    
 
     def probability(self, gameState, action) :
         return 1/len(gameState.getLegalActions(self.index))
@@ -130,33 +117,35 @@ class FirstAgent(myAgent) :
         
 
         if(self.isRed):
-            if(gameState.getAgentPosition(self.index)>=15):
-                if(gameState.getScore()> 0) :
-                    distanceFromDefend=((self.weight["DefensePointDist"]*self.getMazeDistance(gameState.getAgentPosition(self.index),(12,10)))**2)*(-1)
-                if(gameState.getAgentPosition(2)!='None') :
-                    enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(2))
-                if(gameState.getAgentPosition(3)!='None') :
-                    enemyDistance2= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(3))
-                enemyDistance=((12- enemyDistance1)** 2)+((12- enemyDistance2)** 2)
-                enemyDistance/=2
-            else:
-                if(gameState.getScore()> 0) :
-                    distanceFromDefend=((self.weight["DefensePointDist"]*self.getMazeDistance(gameState.getAgentPosition(self.index),(12,10)))**2)*(-1)
+            enemyDistance= 0
+            if(gameState.getAgentPosition(2)!='None') :
+                enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(2))
+                if(gameState.getAgentPosition(2)[0]>= 15 and enemyDistance1<=5): #적과의 거리
+                    enemyDistance-= (6-enemyDistance1)** self.weight["EnemyBaseOppAgentDist"]
+                    if(state.data.agentStates[2].scaredTimer == 0 ):
+                        enemyDistance=0
+                if(gameState.getAgentPosition(2)[0]<= 14 and enemyDistance1<=7):
+                    enemyDistance+= (8-enemyDistance1)* self.weight["OurBaseOppAgentDist"]
+            if(gameState.getAgentPosition(3)!='None') :
+                enemyDistance2= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(3))
+                if(gameState.getAgentPosition(3)[0]>= 15 and enemyDistance2<=5):
+                    enemyDistance-= (6-enemyDistance2)** self.weight["EnemyBaseOppAgentDist"]       
+                if(gameState.getAgentPosition(3)[0]<= 14 and enemyDistance2<=7):
+                    enemyDistance+= (8-enemyDistance2)* self.weight["OurBaseOppAgentDist"]
+               
+            if(gameState.getScore()> 0) :
+                distanceFromDefend-=(self.getMazeDistance(gameState.getAgentPosition(self.index),[12,10]))**2
 
 
         else:
-            if(gameState.getAgentPosition(self.index)<=14):
-                if(gameState.getScore()< 0) :
-                    distanceFromDefend=((self.weight["DefensePointDist"]* self.getMazeDistance(gameState.getAgentPosition(self.index),(19,5)))**2)*(-1)
-                if(gameState.getAgentPosition(0)!='None') :
-                    enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(0))
-                if(gameState.getAgentPosition(1)!='None') :
-                    enemyDistance2= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(1))
-                enemyDistance=((12-enemyDistance1)**2)+((12-enemyDistance2)**2)
-                enemyDistance/=2
-            else:
-                 if(gameState.getScore()< 0) :
-                    distanceFromDefend=((self.weight["DefensePointDist"]* self.getMazeDistance(gameState.getAgentPosition(self.index),(19,5)))**2)*(-1)
+            if(gameState.getAgentPosition(0)!='None') :
+                enemyDistance1= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(0))
+            if(gameState.getAgentPosition(1)!='None') :
+                enemyDistance2= self.getMazeDistance(gameState.getAgentPosition(self.index), gameState.getAgentPosition(1))
+            enemyDistance=((12-enemyDistance1)**2)+((12-enemyDistance2)**2)
+            enemyDistance/=2
+            if(gameState.getScore()< 0) :
+               distanceFromDefend=((self.weight["DefensePointDist"]* self.getMazeDistance(gameState.getAgentPosition(self.index),[19,5]))**2)*(-1)
 
 
         terminal[0] = terminal[0]*self.weight["PalletNum"] + foodNearest*self.weight["NearestPallet"] + distanceFromDefend + self.weight["EnemyBaseOppAgentDist"]*enemyDistance
@@ -260,7 +249,7 @@ class FirstAgent(myAgent) :
         LeftTime = 300 - self.GameTime
         
         Score = gameState.getScore()
-        RB = gameState.isRed()
+        RB = self.isRed
         if (Score > 0 and RB == True):
             IsWin = True
         else:
@@ -315,7 +304,6 @@ class FirstAgent(myAgent) :
         else:
             return Directions.SOUTH
 
-
     def chooseMove(self, gameState): #오승빈
         if(abs(gameState.getAgentPosition(self.index)[0]-self.start[0])<=14) :
             FirstAgent.count=0
@@ -345,6 +333,20 @@ class FirstAgent(myAgent) :
             FirstAgent.count += 1
 
         return choice
+
+    def chooseAction(self, gameState):
+        """
+        Picks among actions randomly.
+        """
+        actions = gameState.getLegalActions(self.index)
+
+        '''
+        You should change this in your own agent.
+        '''
+
+        move = self.chooseMove(gameState)[1]
+
+        return move
 
 class SecondAgent(myAgent) :
 
@@ -496,3 +498,15 @@ class SecondAgent(myAgent) :
             FirstAgent.count += 1
 
         return choice
+
+    def chooseAction(self, gameState):
+        """
+        Picks among actions randomly.
+        """
+        actions = gameState.getLegalActions(self.index)
+
+        '''
+        You should change this in your own agent.
+        '''
+        move = self.chooseMove(gameState)[1]
+        return move
