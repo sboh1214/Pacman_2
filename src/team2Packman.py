@@ -46,7 +46,7 @@ class myAgent(CaptureAgent) :
     "OurBaseDistUnder2":-15, \
     "EatenPallet":1, \
     "OppAgentKill":20, \
-    "OurBaseOppAgentDist":3, \
+    "OurBaseOppAgentDist":10, \
     "ScaredAgentDist":-20, \
     "DefensePointDist":3}
     GameTime = 0
