@@ -308,14 +308,14 @@ class FirstAgent(myAgent) :
             RedSecond = gameState.getLegalActions(redIndex[1])
             for item in RedSecond:
                 if (item is "EAST"):
-                    return [0,Directions.EAST]
-            return [0,Directions.STOP]
+                    return Directions.EAST
+            return Directions.STOP
         else:
             BlueSecond = gameState.getLegalActions(blueIndex[1])
             for item in BlueSecond:
                 if (item is "WEST"):
-                    return [0,Directions.WEST]
-            return [0,Directions.STOP]
+                    return Directions.WEST
+            return Directions.STOP
 
     def chooseTimeDefense(self, gameState): #오승빈
         redIndex=gameState.getRedTeamIndices()
@@ -324,20 +324,20 @@ class FirstAgent(myAgent) :
             RedSecond = gameState.getLegalActions(redIndex[1])
             for item in RedSecond:
                 if (item is "WEST"):
-                    return [0,Directions.WEST]
-            return [0,Directions.STOP]
+                    return Directions.WEST
+            return Directions.STOP
         else:
             BlueSecond = gameState.getLegalActions(blueIndex[1])
             for item in BlueSecond:
                 if (item is "EAST"):
-                    return [0,Directions.EAST]
-            return [0,Directions.STOP]
+                    return Directions.EAST
+            return Directions.STOP
 
     def chooseInitial(self, gameState): #오승빈
         if (gameState.isRed == True):
-            return [0,Directions.NORTH]
+            return Directions.NORTH
         else:
-            return [0,Directions.SOUTH]
+            return Directions.SOUTH
 
     def chooseMustMove(self, gameState): #오승빈
         redIndex=gameState.getRedTeamIndices()
@@ -346,30 +346,26 @@ class FirstAgent(myAgent) :
             RedFirst = gameState.getLegalActions(redIndex[0])
             for item in RedFirst:
                 if (item is "WEST"):
-                    return [0,Directions.WEST]
+                    return Directions.WEST
                 elif (item is "EAST"):
-                    return [0,Directions.EAST]
+                    return Directions.EAST
                 elif (item is "SOUTH"):
-                    return [0,Directions.SOUTH]
+                    return Directions.SOUTH
                 elif (item is "NORTH"):
-                    return [0,Directions.NORTH]
-                else:
-                    return [0,Directions.STOP]
-            return [0,Directions.STOP]
+                    return Directions.NORTH
+            return Directions.STOP
         else:
             BlueFirst = gameState.getLegalActions(blueIndex[0])
             for item in BlueFirst:
                 if (item is "WEST"):
-                    return [0,Directions.WEST]
+                    return Directions.WEST
                 elif (item is "EAST"):
-                    return [0,Directions.EAST]
+                    return Directions.EAST
                 elif (item is "SOUTH"):
-                    return [0,Directions.SOUTH]
+                    return Directions.SOUTH
                 elif (item is "NORTH"):
-                    return [0,Directions.NORTH]
-                else:
-                    return [0,Directions.STOP]
-            return [0,Directions.STOP]
+                    return Directions.NORTH
+            return Directions.STOP
 
     def chooseMove(self, gameState): #오승빈
         if(abs(gameState.getAgentPosition(self.index)[0]-self.start[0])<=14) :
@@ -633,14 +629,14 @@ class SecondAgent(myAgent) :
             RedSecond = gameState.getLegalActions(redIndex[1])
             for item in RedSecond:
                 if (item is "EAST"):
-                    return [0,Directions.EAST]
-            return [0,Directions.STOP]
+                    return Directions.EAST
+            return Directions.STOP
         else:
             BlueSecond = gameState.getLegalActions(blueIndex[1])
             for item in BlueSecond:
                 if (item is "WEST"):
-                    return [0,Directions.WEST]
-            return [0,Directions.STOP]
+                    return Directions.WEST
+            return Directions.STOP
 
     def chooseTimeDefense(self, gameState): #오승빈
         redIndex=gameState.getRedTeamIndices()
@@ -649,20 +645,20 @@ class SecondAgent(myAgent) :
             RedSecond = gameState.getLegalActions(redIndex[1])
             for item in RedSecond:
                 if (item is "WEST"):
-                    return [0,Directions.WEST]
-            return [0,Directions.STOP]
+                    return Directions.WEST
+            return Directions.STOP
         else:
             BlueSecond = gameState.getLegalActions(blueIndex[1])
             for item in BlueSecond:
                 if (item is "EAST"):
-                    return [0,Directions.EAST]
-            return [0,Directions.STOP]
+                    return Directions.EAST
+            return Directions.STOP
 
     def chooseInitial(self, gameState): #오승빈
         if (gameState.isRed == True):
-            return [0,Directions.NORTH]
+            return Directions.NORTH
         else:
-            return [0,Directions.SOUTH]
+            return Directions.SOUTH
 
     def chooseMustMove(self, gameState): #오승빈
         redIndex=gameState.getRedTeamIndices()
@@ -671,12 +667,13 @@ class SecondAgent(myAgent) :
             RedSecond = gameState.getLegalActions(redIndex[1])
             for item in RedSecond:
                 if (item is "WEST"):
-                    return [0,Directions.WEST]
+                    return Directions.WEST
                 elif (item is "EAST"):
-                    return [0,Directions.EAST]
+                    return Directions.EAST
                 elif (item is "SOUTH"):
-                    return [0,Directions.SOUTH]
+                    return Directions.SOUTH
                 elif (item is "NORTH"):
+<<<<<<< HEAD
 <<<<<<< HEAD
                     return [0,Directions.NORTH]
                 else:
@@ -686,16 +683,23 @@ class SecondAgent(myAgent) :
                     return Directions.NORTH
             return Directions.STOP
 >>>>>>> parent of 388708a... asfd
+=======
+                    return Directions.NORTH
+                else:
+                    return Directions.STOP
+            return Directions.STOP
+>>>>>>> parent of 4b877c1... Merge branch 'master' of https://github.com/sboh1214/Pacman_2
         else:
             BlueSecond = gameState.getLegalActions(blueIndex[1])
             for item in BlueSecond:
                 if (item is "WEST"):
-                    return [0,Directions.WEST]
+                    return Directions.WEST
                 elif (item is "EAST"):
-                    return [0,Directions.EAST]
+                    return Directions.EAST
                 elif (item is "SOUTH"):
-                    return [0,Directions.SOUTH]
+                    return Directions.SOUTH
                 elif (item is "NORTH"):
+<<<<<<< HEAD
 <<<<<<< HEAD
                     return [0,Directions.NORTH]
                 else:
@@ -705,6 +709,12 @@ class SecondAgent(myAgent) :
                     return Directions.NORTH
             return Directions.STOP
 >>>>>>> parent of 388708a... asfd
+=======
+                    return Directions.NORTH
+                else:
+                    return Directions.STOP
+            return Directions.STOP
+>>>>>>> parent of 4b877c1... Merge branch 'master' of https://github.com/sboh1214/Pacman_2
 
     def chooseMove(self, gameState): #오승빈
         if(abs(gameState.getAgentPosition(self.index)[0]-self.start[0])<=14) :
